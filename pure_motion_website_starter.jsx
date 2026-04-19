@@ -16,6 +16,12 @@ const categories=[
   {id:"sportswear",name:"Sportswear",img:"/SportKits.jpg"}
 ];
 
+const clubProducts=[
+  {name:"Club Training Top",img:"/SportKits.jpg"},
+  {name:"Club Hoodie",img:"/hoodie.png"},
+  {name:"Club Tracksuit",img:"/tracksuit1.png"}
+];
+
 const products={
 
   tracksuits:[
@@ -57,10 +63,8 @@ export default function App(){
   const[cart,setCart]=useState([]);
 
   function addToCart(item){
-
     setCart([...cart,item]);
     setSelected(null);
-
   }
 
   return(
@@ -78,6 +82,8 @@ export default function App(){
 
           <CategoryGrid setPage={setPage}/>
 
+          <TrustSection/>
+
         </>
 
       )}
@@ -89,16 +95,28 @@ export default function App(){
 
           <Section title={cat}>
 
-            <ProductGrid
-              items={products[cat]}
-              setSelected={setSelected}
-            />
+            <ProductGrid items={products[cat]} setSelected={setSelected}/>
 
           </Section>
 
         )
 
       ))}
+
+
+      {page==="clubshop" && (
+
+        <Section title="Example Club Shop">
+
+          <p>
+            Each club can have their own private shop with personalised products.
+          </p>
+
+          <ProductGrid items={clubProducts} setSelected={setSelected}/>
+
+        </Section>
+
+      )}
 
 
       {page==="cart" && (
@@ -119,7 +137,6 @@ export default function App(){
 
           ))}
 
-
           {cart.length>0 && (
 
             <a
@@ -127,9 +144,7 @@ export default function App(){
             >
 
               <button style={cta}>
-
                 Request Quote
-
               </button>
 
             </a>
@@ -149,7 +164,6 @@ export default function App(){
             Email or WhatsApp us for pricing and design enquiries.
           </p>
 
-
           <a href="mailto:enquiries@puremotion.com">
 
             <button style={cta}>
@@ -157,7 +171,6 @@ export default function App(){
             </button>
 
           </a>
-
 
           <a href="https://wa.me/" target="_blank">
 
@@ -174,16 +187,12 @@ export default function App(){
 
       {selected && (
 
-        <Modal
-          item={selected}
-          close={()=>setSelected(null)}
-          addToCart={addToCart}
-        />
+        <Modal item={selected} close={()=>setSelected(null)} addToCart={addToCart}/>
 
       )}
 
 
-      <Footer/>
+      <Footer setPage={setPage}/>
 
     </div>
 
@@ -203,7 +212,6 @@ function Nav({setPage,cartCount}){
         PURE MOTION
       </div>
 
-
       <div style={{display:"flex",flexWrap:"wrap"}}>
 
         {categories.map(c=>(
@@ -212,6 +220,7 @@ function Nav({setPage,cartCount}){
 
         ))}
 
+        <Btn label="Club Shop" click={()=>setPage("clubshop")}/>
 
         <Btn label={`Quote (${cartCount})`} click={()=>setPage("cart")}/>
 
@@ -239,11 +248,9 @@ function Hero(){
           Premium Custom Teamwear
         </h1>
 
-
         <Mission/>
 
       </div>
-
 
       <img src="/hoodie.png" style={heroImg}/>
 
@@ -261,27 +268,53 @@ function Mission(){
 
     <div style={missionBox}>
 
-      <h3 style={{
-        color:"#22c55e",
-        marginBottom:10
-      }}>
+      <h3 style={{color:"#22c55e"}}>
         Our Mission
       </h3>
 
-
-      <p style={{opacity:0.9,lineHeight:1.6}}>
+      <p>
         Pure Motion exists to make high-quality custom teamwear accessible to every club, team, and athlete.
       </p>
 
-
-      <p style={{opacity:0.75,lineHeight:1.6,marginTop:10}}>
-        We design and produce premium custom kits, tracksuits, and performance apparel that combine professional-level quality with affordable pricing.
+      <p>
+        We combine premium design, performance materials, and affordable pricing.
       </p>
 
-
-      <p style={{opacity:0.75,lineHeight:1.6,marginTop:10}}>
-        Our aim is to bring quality design, strong finishing, and a wide range of products to grassroots clubs, ensuring high performance is not only achieved — but visible.
+      <p>
+        Helping grassroots clubs achieve elite level identity and confidence.
       </p>
+
+    </div>
+
+  );
+
+}
+
+
+
+function TrustSection(){
+
+  return(
+
+    <div style={section}>
+
+      <h2>Why teams choose Pure Motion</h2>
+
+      <div style={grid}>
+
+        <div style={card}>Premium quality materials</div>
+
+        <div style={card}>Custom designs available</div>
+
+        <div style={card}>Affordable pricing</div>
+
+        <div style={card}>Fast turnaround</div>
+
+        <div style={card}>Low minimum orders</div>
+
+        <div style={card}>Wide product range</div>
+
+      </div>
 
     </div>
 
@@ -298,7 +331,6 @@ function CategoryGrid({setPage}){
     <div style={section}>
 
       <h2>Browse Products</h2>
-
 
       <div style={grid}>
 
@@ -374,14 +406,13 @@ function Modal({item,close,addToCart}){
 
         <h2>{item.name}</h2>
 
+        <p style={{opacity:0.7}}>
+          Custom colours available • logo printing • bulk pricing
+        </p>
 
-        <button
-          style={cta}
-          onClick={()=>addToCart(item)}
-        >
+        <button style={cta} onClick={()=>addToCart(item)}>
           Add to Quote
         </button>
-
 
         <a href={`mailto:enquiries@puremotion.com?subject=Enquiry about ${item.name}`}>
 
@@ -390,7 +421,6 @@ function Modal({item,close,addToCart}){
           </button>
 
         </a>
-
 
         <a href={`https://wa.me/?text=I am interested in ${item.name}`}>
 
@@ -444,12 +474,22 @@ function Btn({label,click}){
 
 
 
-function Footer(){
+function Footer({setPage}){
 
   return(
 
     <div style={footer}>
-      PURE MOTION
+
+      PURE MOTION • Custom Teamwear
+
+      <div style={{marginTop:10}}>
+
+        <span style={link} onClick={()=>setPage("contact")}>
+          Contact
+        </span>
+
+      </div>
+
     </div>
 
   );
@@ -472,8 +512,7 @@ const nav={
   padding:20,
   borderBottom:"1px solid #111",
   display:"flex",
-  justifyContent:"space-between",
-  zIndex:10
+  justifyContent:"space-between"
 };
 
 const logo={
@@ -584,4 +623,9 @@ const footer={
   padding:40,
   marginTop:40,
   borderTop:"1px solid #111"
+};
+
+const link={
+  cursor:"pointer",
+  color:"#22c55e"
 };
