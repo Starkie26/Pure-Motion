@@ -7,182 +7,105 @@ const brand = {
   text: "#e5e7eb"
 };
 
+const categories = [
+  { id:"tracksuits", name:"Tracksuits", img:"/tracksuit1.png" },
+  { id:"jerseys", name:"Jerseys", img:"/Jersey.png" },
+  { id:"hoodies", name:"Hoodies", img:"/hoodie.png" },
+  { id:"dance", name:"Dance", img:"/irishdance.png" },
+  { id:"jackets", name:"Jackets", img:"/Jackets.jpg" },
+  { id:"sportswear", name:"Sportswear", img:"/SportKits.jpg" }
+];
+
 const products = {
 
   tracksuits: [
-    { name: "Elite Tracksuit", img: "/tracksuit1.png" },
-    { name: "Pro Tracksuit", img: "/tracksuit2.png" }
+    { name:"Elite Tracksuit", img:"/tracksuit1.png" },
+    { name:"Pro Tracksuit", img:"/tracksuit2.png" }
   ],
 
   hoodies: [
-    { name: "Performance Hoodie", img: "/hoodie.png" },
-    { name: "Training Hoodie", img: "/hoodie2.png" }
+    { name:"Performance Hoodie", img:"/hoodie.png" },
+    { name:"Training Hoodie", img:"/hoodie2.png" }
   ],
 
   jerseys: [
-    { name: "Match Jersey", img: "/Jersey.png" },
-    { name: "Club Jersey", img: "/Jersey2.png" }
+    { name:"Match Jersey", img:"/Jersey.png" },
+    { name:"Club Jersey", img:"/Jersey2.png" }
   ],
 
   dance: [
-    { name: "Irish Dance Dress", img: "/irishdance.png" }
+    { name:"Irish Dance Dress", img:"/irishdance.png" }
   ],
 
   jackets: [
-    { name: "Performance Jacket", img: "/Jackets.jpg" },
-    { name: "Elite Jacket", img: "/Jackets2.jpg" }
+    { name:"Performance Jacket", img:"/Jackets.jpg" },
+    { name:"Elite Jacket", img:"/Jackets2.jpg" }
   ],
 
   sportswear: [
-    { name: "Sports Kit", img: "/SportKits.jpg" },
-    { name: "Training Sportswear", img: "/SportKits2.jpg" }
+    { name:"Sports Kit", img:"/SportKits.jpg" },
+    { name:"Training Sportswear", img:"/SportKits2.jpg" }
   ]
 
 };
 
 
-export default function App() {
+export default function App(){
 
-  const [page, setPage] = useState("home");
-  const [selected, setSelected] = useState(null);
+  const [page,setPage]=useState("home");
+  const [selected,setSelected]=useState(null);
 
-  return (
+
+  return(
+
     <div style={wrapper}>
 
       <Nav setPage={setPage}/>
 
 
-      {page === "home" && (
+      {page==="home" && (
 
-        <div style={hero}>
+        <div>
 
-          <div>
+          <Hero setPage={setPage}/>
 
-            <h1 style={heroTitle}>
-              Elite Teamwear &
-              <span style={{color:brand.accent}}> Custom Performance</span>
-            </h1>
-
-            <p style={intro}>
-              Custom kits, tracksuits and performance apparel designed for teams, clubs and athletes.
-            </p>
-
-
-            <Mission/>
-
-
-            <button style={cta} onClick={() => setPage("tracksuits")}>
-              View Collection
-            </button>
-
-          </div>
-
-
-          <img src="/hoodie.png" style={heroImg}/>
+          <CategoryGrid setPage={setPage}/>
 
         </div>
 
       )}
 
 
+      {Object.keys(products).map(cat => (
 
-      {page === "tracksuits" && (
-        <Section title="Tracksuits">
-          <ProductGrid items={products.tracksuits} setSelected={setSelected}/>
-        </Section>
-      )}
+        page===cat && (
 
+          <Section title={cat}>
 
-      {page === "jerseys" && (
-        <Section title="Jerseys">
-          <ProductGrid items={products.jerseys} setSelected={setSelected}/>
-        </Section>
-      )}
+            <ProductGrid items={products[cat]} setSelected={setSelected}/>
 
+          </Section>
 
-      {page === "dance" && (
-        <Section title="Dance & Performance">
-          <ProductGrid items={products.dance} setSelected={setSelected}/>
-        </Section>
-      )}
+        )
+
+      ))}
 
 
-      {page === "hoodies" && (
-        <Section title="Hoodies">
-          <ProductGrid items={products.hoodies} setSelected={setSelected}/>
-        </Section>
-      )}
-
-
-      {page === "jackets" && (
-        <Section title="Jackets">
-          <ProductGrid items={products.jackets} setSelected={setSelected}/>
-        </Section>
-      )}
-
-
-      {page === "sportswear" && (
-        <Section title="Sportswear">
-          <ProductGrid items={products.sportswear} setSelected={setSelected}/>
-        </Section>
-      )}
-
-
-      {page === "club" && (
-        <Section title="Club Shop">
-
-          <p style={desc}>
-            Dedicated online shops for sports clubs and teams.
-          </p>
-
-          <button style={cta} onClick={() => setPage("contact")}>
-            Request Club Shop
-          </button>
-
-        </Section>
-      )}
-
-
-      {page === "custom" && (
-        <Section title="Custom Kit Design">
-
-          <p style={desc}>
-            Fully customised teamwear built to your branding.
-          </p>
-
-          <button style={cta} onClick={() => setPage("contact")}>
-            Start Design
-          </button>
-
-        </Section>
-      )}
-
-
-      {page === "contact" && (
-        <Section title="Contact">
-          enquiries@puremotion.com
-        </Section>
-      )}
-
-
-
-      {selected && (
-        <Modal item={selected} close={()=>setSelected(null)}/>
-      )}
-
+      {selected && <Modal item={selected} close={()=>setSelected(null)}/>}
 
       <Footer/>
 
     </div>
+
   );
+
 }
 
 
 
+function Nav({setPage}){
 
-function Nav({setPage}) {
-
-  return (
+  return(
 
     <div style={nav}>
 
@@ -191,25 +114,11 @@ function Nav({setPage}) {
       </div>
 
 
-      <div>
+      <div style={{display:"flex",flexWrap:"wrap"}}>
 
-        <Btn label="Tracksuits" click={()=>setPage("tracksuits")}/>
-
-        <Btn label="Jerseys" click={()=>setPage("jerseys")}/>
-
-        <Btn label="Dance" click={()=>setPage("dance")}/>
-
-        <Btn label="Hoodies" click={()=>setPage("hoodies")}/>
-
-        <Btn label="Jackets" click={()=>setPage("jackets")}/>
-
-        <Btn label="Sportswear" click={()=>setPage("sportswear")}/>
-
-        <Btn label="Club Shop" click={()=>setPage("club")}/>
-
-        <Btn label="Custom Kit" click={()=>setPage("custom")}/>
-
-        <Btn label="Contact" click={()=>setPage("contact")}/>
+        {categories.map(c=>(
+          <Btn key={c.id} label={c.name} click={()=>setPage(c.id)}/>
+        ))}
 
       </div>
 
@@ -221,10 +130,82 @@ function Nav({setPage}) {
 
 
 
+function Hero({setPage}){
 
-function Mission() {
+  return(
 
-  return (
+    <div style={hero}>
+
+      <div>
+
+        <h1 style={heroTitle}>
+          Elite Teamwear &
+          <span style={{color:brand.accent}}> Custom Performance</span>
+        </h1>
+
+
+        <p style={intro}>
+          Premium custom kits designed for clubs, teams and athletes.
+        </p>
+
+
+        <Mission/>
+
+
+        <button style={cta} onClick={()=>setPage("tracksuits")}>
+          Browse Collection
+        </button>
+
+      </div>
+
+
+      <img src="/hoodie.png" style={heroImg}/>
+
+    </div>
+
+  );
+
+}
+
+
+
+function CategoryGrid({setPage}){
+
+  return(
+
+    <div style={categorySection}>
+
+      <h2>Browse Categories</h2>
+
+      <div style={grid}>
+
+        {categories.map(cat=>(
+
+          <div key={cat.id} style={categoryCard} onClick={()=>setPage(cat.id)}>
+
+            <img src={cat.img} style={img}/>
+
+            <div style={{marginTop:10,fontWeight:600}}>
+              {cat.name}
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  );
+
+}
+
+
+
+function Mission(){
+
+  return(
 
     <div style={missionBox}>
 
@@ -237,11 +218,11 @@ function Mission() {
       </p>
 
       <p>
-        We design and produce premium custom kits, tracksuits, and performance apparel that combine professional-level quality with affordable pricing.
+        Premium custom kits combining professional design with affordable pricing.
       </p>
 
       <p>
-        Our goal is to give grassroots clubs the same level of design and finish typically reserved for elite teams.
+        Helping grassroots clubs achieve elite level identity and performance.
       </p>
 
     </div>
@@ -252,14 +233,14 @@ function Mission() {
 
 
 
+function ProductGrid({items,setSelected}){
 
-function ProductGrid({items,setSelected}) {
-
-  return (
+  return(
 
     <div style={grid}>
 
       {items.map((p,i)=>(
+
         <div key={i} style={card} onClick={()=>setSelected(p)}>
 
           <img src={p.img} style={img}/>
@@ -267,6 +248,7 @@ function ProductGrid({items,setSelected}) {
           <h3>{p.name}</h3>
 
         </div>
+
       ))}
 
     </div>
@@ -277,10 +259,9 @@ function ProductGrid({items,setSelected}) {
 
 
 
+function Modal({item,close}){
 
-function Modal({item,close}) {
-
-  return (
+  return(
 
     <div style={modalBg} onClick={close}>
 
@@ -304,14 +285,15 @@ function Modal({item,close}) {
 
 
 
+function Section({title,children}){
 
-function Section({title,children}) {
-
-  return (
+  return(
 
     <div style={section}>
 
-      <h1>{title}</h1>
+      <h1 style={{textTransform:"capitalize"}}>
+        {title}
+      </h1>
 
       {children}
 
@@ -323,15 +305,12 @@ function Section({title,children}) {
 
 
 
+function Btn({label,click}){
 
-function Btn({label,click}) {
-
-  return (
+  return(
 
     <button onClick={click} style={navBtn}>
-
       {label}
-
     </button>
 
   );
@@ -340,15 +319,12 @@ function Btn({label,click}) {
 
 
 
+function Footer(){
 
-function Footer() {
-
-  return (
+  return(
 
     <div style={footer}>
-
-      PURE MOTION ©
-
+      PURE MOTION
     </div>
 
   );
@@ -357,218 +333,147 @@ function Footer() {
 
 
 
-
-const wrapper = {
-
+const wrapper={
   background:"#020617",
-
   color:"#e5e7eb",
-
   minHeight:"100vh",
-
   fontFamily:"Arial"
-
 };
 
 
-const nav = {
-
-  padding:20,
-
-  borderBottom:"1px solid #111",
-
-  display:"flex",
-
-  justifyContent:"space-between",
-
-  flexWrap:"wrap"
-
-};
-
-
-const logo = {
-
-  color:"#22c55e",
-
-  fontWeight:700,
-
-  cursor:"pointer"
-
-};
-
-
-const navBtn = {
-
-  marginLeft:20,
-
-  background:"transparent",
-
-  border:"none",
-
-  color:"#e5e7eb",
-
-  cursor:"pointer"
-
-};
-
-
-const hero = {
-
-  padding:40,
-
-  display:"grid",
-
-  gridTemplateColumns:"1fr 1fr",
-
-  gap:40,
-
-  alignItems:"center"
-
-};
-
-
-const heroTitle = {
-
-  fontSize:48
-
-};
-
-
-const heroImg = {
-
-  width:"100%",
-
-  borderRadius:20
-
-};
-
-
-const intro = {
-
-  opacity:0.85,
-
-  maxWidth:500
-
-};
-
-
-const missionBox = {
-
-  marginTop:25,
-
-  padding:20,
-
-  border:"1px solid #1f2937",
-
-  borderRadius:10
-
-};
-
-
-const grid = {
-
-  display:"grid",
-
-  gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
-
-  gap:20,
-
-  marginTop:20
-
-};
-
-
-const card = {
-
-  background:"#0f172a",
-
-  padding:16,
-
-  borderRadius:12,
-
-  cursor:"pointer"
-
-};
-
-
-const img = {
-
-  width:"100%",
-
-  borderRadius:10
-
-};
-
-
-const cta = {
-
-  background:"#22c55e",
-
-  border:"none",
-
-  padding:"12px 18px",
-
-  borderRadius:8,
-
-  marginTop:20,
-
-  cursor:"pointer"
-
-};
-
-
-const modalBg = {
-
-  position:"fixed",
-
-  inset:0,
-
-  background:"rgba(0,0,0,0.7)",
-
-  display:"flex",
-
-  justifyContent:"center",
-
-  alignItems:"center"
-
-};
-
-
-const modal = {
-
+const nav={
+  position:"sticky",
+  top:0,
   background:"#020617",
-
-  padding:30,
-
-  borderRadius:12,
-
-  width:320
-
+  padding:20,
+  borderBottom:"1px solid #111",
+  display:"flex",
+  justifyContent:"space-between",
+  zIndex:10
 };
 
 
-const section = {
-
-  padding:40
-
+const logo={
+  color:"#22c55e",
+  fontWeight:700,
+  cursor:"pointer"
 };
 
 
-const footer = {
+const navBtn={
+  marginLeft:15,
+  background:"transparent",
+  border:"none",
+  color:"#e5e7eb",
+  cursor:"pointer"
+};
 
-  textAlign:"center",
 
+const hero={
   padding:40,
-
-  marginTop:40,
-
-  borderTop:"1px solid #111"
-
+  display:"grid",
+  gridTemplateColumns:"1fr 1fr",
+  gap:40,
+  alignItems:"center"
 };
 
 
-const desc = {
+const heroTitle={
+  fontSize:48
+};
 
-  opacity:0.8
 
+const heroImg={
+  width:"100%",
+  borderRadius:20
+};
+
+
+const intro={
+  opacity:0.8,
+  maxWidth:500
+};
+
+
+const missionBox={
+  marginTop:25,
+  padding:20,
+  border:"1px solid #1f2937",
+  borderRadius:12
+};
+
+
+const categorySection={
+  padding:40
+};
+
+
+const grid={
+  display:"grid",
+  gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
+  gap:20,
+  marginTop:20
+};
+
+
+const categoryCard={
+  background:"#0f172a",
+  padding:16,
+  borderRadius:12,
+  cursor:"pointer"
+};
+
+
+const card={
+  background:"#0f172a",
+  padding:16,
+  borderRadius:12,
+  cursor:"pointer"
+};
+
+
+const img={
+  width:"100%",
+  borderRadius:10
+};
+
+
+const cta={
+  background:"#22c55e",
+  border:"none",
+  padding:"12px 18px",
+  borderRadius:8,
+  marginTop:20,
+  cursor:"pointer"
+};
+
+
+const modalBg={
+  position:"fixed",
+  inset:0,
+  background:"rgba(0,0,0,0.7)",
+  display:"flex",
+  justifyContent:"center",
+  alignItems:"center"
+};
+
+
+const modal={
+  background:"#020617",
+  padding:30,
+  borderRadius:12,
+  width:320
+};
+
+
+const section={
+  padding:40
+};
+
+
+const footer={
+  textAlign:"center",
+  padding:40,
+  marginTop:40,
+  borderTop:"1px solid #111"
 };
