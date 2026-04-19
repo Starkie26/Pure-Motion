@@ -1,48 +1,56 @@
 import React, { useState } from "react";
 
 const brand = {
-  bg: "#020617",
-  card: "#0f172a",
-  accent: "#22c55e",
-  text: "#e5e7eb"
+  bg:"#020617",
+  card:"#0f172a",
+  accent:"#22c55e",
+  text:"#e5e7eb"
 };
 
 const categories = [
+
   { id:"tracksuits", name:"Tracksuits", img:"/tracksuit1.png" },
+
   { id:"jerseys", name:"Jerseys", img:"/Jersey.png" },
+
   { id:"hoodies", name:"Hoodies", img:"/hoodie.png" },
+
   { id:"dance", name:"Dance", img:"/irishdance.png" },
+
   { id:"jackets", name:"Jackets", img:"/Jackets.jpg" },
+
   { id:"sportswear", name:"Sportswear", img:"/SportKits.jpg" }
+
 ];
+
 
 const products = {
 
-  tracksuits: [
+  tracksuits:[
     { name:"Elite Tracksuit", img:"/tracksuit1.png" },
     { name:"Pro Tracksuit", img:"/tracksuit2.png" }
   ],
 
-  hoodies: [
+  hoodies:[
     { name:"Performance Hoodie", img:"/hoodie.png" },
     { name:"Training Hoodie", img:"/hoodie2.png" }
   ],
 
-  jerseys: [
+  jerseys:[
     { name:"Match Jersey", img:"/Jersey.png" },
     { name:"Club Jersey", img:"/Jersey2.png" }
   ],
 
-  dance: [
+  dance:[
     { name:"Irish Dance Dress", img:"/irishdance.png" }
   ],
 
-  jackets: [
+  jackets:[
     { name:"Performance Jacket", img:"/Jackets.jpg" },
     { name:"Elite Jacket", img:"/Jackets2.jpg" }
   ],
 
-  sportswear: [
+  sportswear:[
     { name:"Sports Kit", img:"/SportKits.jpg" },
     { name:"Training Sportswear", img:"/SportKits2.jpg" }
   ]
@@ -64,18 +72,18 @@ export default function App(){
 
       {page==="home" && (
 
-        <div>
+        <>
 
           <Hero setPage={setPage}/>
 
           <CategoryGrid setPage={setPage}/>
 
-        </div>
+        </>
 
       )}
 
 
-      {Object.keys(products).map(cat => (
+      {Object.keys(products).map(cat=>(
 
         page===cat && (
 
@@ -109,14 +117,18 @@ function Nav({setPage}){
     <div style={nav}>
 
       <div style={logo} onClick={()=>setPage("home")}>
+
         PURE MOTION
+
       </div>
 
 
       <div style={{display:"flex",flexWrap:"wrap"}}>
 
         {categories.map(c=>(
+
           <Btn key={c.id} label={c.name} click={()=>setPage(c.id)}/>
+
         ))}
 
       </div>
@@ -138,13 +150,18 @@ function Hero({setPage}){
       <div>
 
         <h1 style={heroTitle}>
+
           Elite Teamwear &
+
           <span style={{color:brand.accent}}> Custom Performance</span>
+
         </h1>
 
 
         <p style={intro}>
+
           Premium custom kits designed for clubs, teams and athletes.
+
         </p>
 
 
@@ -152,7 +169,9 @@ function Hero({setPage}){
 
 
         <button style={cta} onClick={()=>setPage("tracksuits")}>
+
           Browse Collection
+
         </button>
 
       </div>
@@ -176,16 +195,26 @@ function CategoryGrid({setPage}){
 
       <h2>Browse Categories</h2>
 
+
       <div style={grid}>
 
         {categories.map(cat=>(
 
-          <div key={cat.id} style={categoryCard} onClick={()=>setPage(cat.id)}>
+          <div key={cat.id}
+
+               style={categoryCard}
+
+               onClick={()=>setPage(cat.id)}
+
+          >
 
             <img src={cat.img} style={img}/>
 
+
             <div style={{marginTop:10,fontWeight:600}}>
+
               {cat.name}
+
             </div>
 
           </div>
@@ -209,19 +238,30 @@ function Mission(){
     <div style={missionBox}>
 
       <h3 style={{color:brand.accent}}>
+
         Our Mission
+
       </h3>
 
+
       <p>
+
         Pure Motion exists to make high-quality custom teamwear accessible to every club, team, and athlete.
+
       </p>
 
+
       <p>
+
         Premium custom kits combining professional design with affordable pricing.
+
       </p>
 
+
       <p>
+
         Helping grassroots clubs achieve elite level identity and performance.
+
       </p>
 
     </div>
@@ -240,9 +280,16 @@ function ProductGrid({items,setSelected}){
 
       {items.map((p,i)=>(
 
-        <div key={i} style={card} onClick={()=>setSelected(p)}>
+        <div key={i}
+
+             style={card}
+
+             onClick={()=>setSelected(p)}
+
+        >
 
           <img src={p.img} style={img}/>
+
 
           <h3>{p.name}</h3>
 
@@ -260,7 +307,14 @@ function ProductGrid({items,setSelected}){
 
 function Modal({item,close}){
 
-  const [sent,setSent]=useState(false);
+  const subject=`Enquiry about ${item.name}`;
+
+  const body=`Hi Pure Motion,%0D%0A%0D%0AI would like more information about ${item.name}.`;
+
+  const emailLink=`mailto:enquiries@puremotion.com?subject=${subject}&body=${body}`;
+
+  const whatsappLink=`https://wa.me/?text=I am interested in ${item.name}`;
+
 
   return(
 
@@ -270,46 +324,37 @@ function Modal({item,close}){
 
         <img src={item.img} style={img}/>
 
+
         <h2>{item.name}</h2>
 
-        {!sent ? (
 
-          <form
-            onSubmit={(e)=>{
-              e.preventDefault();
-              setSent(true);
-            }}
-          >
+        <p style={{opacity:0.7}}>
 
-            <input placeholder="Name" required style={input}/>
+          Request pricing, sizes or custom branding options.
 
-            <input placeholder="Email" required style={input}/>
+        </p>
 
-            <textarea
-              placeholder={"Message about "+item.name}
-              rows="4"
-              style={input}
-            />
 
-            <button style={cta}>
-              Send Enquiry
-            </button>
+        <a href={emailLink} style={{textDecoration:"none"}}>
 
-          </form>
+          <button style={cta}>
 
-        ) : (
+            Email Enquiry
 
-          <div>
+          </button>
 
-            <p>Enquiry ready ✔</p>
+        </a>
 
-            <p style={{opacity:0.7}}>
-              Next step we connect email sending.
-            </p>
 
-          </div>
+        <a href={whatsappLink} target="_blank">
 
-        )}
+          <button style={whatsappBtn}>
+
+            WhatsApp Enquiry
+
+          </button>
+
+        </a>
 
       </div>
 
@@ -328,8 +373,11 @@ function Section({title,children}){
     <div style={section}>
 
       <h1 style={{textTransform:"capitalize"}}>
+
         {title}
+
       </h1>
+
 
       {children}
 
@@ -346,7 +394,9 @@ function Btn({label,click}){
   return(
 
     <button onClick={click} style={navBtn}>
+
       {label}
+
     </button>
 
   );
@@ -360,7 +410,9 @@ function Footer(){
   return(
 
     <div style={footer}>
+
       PURE MOTION
+
     </div>
 
   );
@@ -370,157 +422,275 @@ function Footer(){
 
 
 const wrapper={
+
   background:"#020617",
+
   color:"#e5e7eb",
+
   minHeight:"100vh",
+
   fontFamily:"Arial"
+
 };
+
 
 
 const nav={
+
   position:"sticky",
+
   top:0,
+
   background:"#020617",
+
   padding:20,
+
   borderBottom:"1px solid #111",
+
   display:"flex",
+
   justifyContent:"space-between",
+
   zIndex:10
+
 };
+
 
 
 const logo={
+
   color:"#22c55e",
+
   fontWeight:700,
+
   cursor:"pointer"
+
 };
+
 
 
 const navBtn={
+
   marginLeft:15,
+
   background:"transparent",
+
   border:"none",
+
   color:"#e5e7eb",
+
   cursor:"pointer"
+
 };
+
 
 
 const hero={
+
   padding:40,
+
   display:"grid",
+
   gridTemplateColumns:"1fr 1fr",
+
   gap:40,
+
   alignItems:"center"
+
 };
+
 
 
 const heroTitle={
+
   fontSize:48
+
 };
+
 
 
 const heroImg={
+
   width:"100%",
+
   borderRadius:20
+
 };
+
 
 
 const intro={
+
   opacity:0.8,
+
   maxWidth:500
+
 };
+
 
 
 const missionBox={
+
   marginTop:25,
+
   padding:20,
+
   border:"1px solid #1f2937",
+
   borderRadius:12
+
 };
+
 
 
 const categorySection={
+
   padding:40
+
 };
+
 
 
 const grid={
+
   display:"grid",
+
   gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
+
   gap:20,
+
   marginTop:20
+
 };
+
 
 
 const categoryCard={
+
   background:"#0f172a",
+
   padding:16,
+
   borderRadius:12,
+
   cursor:"pointer"
+
 };
+
 
 
 const card={
+
   background:"#0f172a",
+
   padding:16,
+
   borderRadius:12,
+
   cursor:"pointer"
+
 };
+
 
 
 const img={
+
   width:"100%",
+
   borderRadius:10
+
 };
 
-
-const input={
-  width:"100%",
-  marginTop:10,
-  padding:10,
-  borderRadius:6,
-  border:"1px solid #1f2937",
-  background:"#020617",
-  color:"#e5e7eb"
-};
 
 
 const cta={
+
   background:"#22c55e",
+
   border:"none",
+
   padding:"12px 18px",
+
   borderRadius:8,
+
   marginTop:20,
-  cursor:"pointer"
+
+  cursor:"pointer",
+
+  width:"100%"
+
 };
+
+
+
+const whatsappBtn={
+
+  background:"#25D366",
+
+  border:"none",
+
+  padding:"12px 18px",
+
+  borderRadius:8,
+
+  marginTop:10,
+
+  cursor:"pointer",
+
+  width:"100%"
+
+};
+
 
 
 const modalBg={
+
   position:"fixed",
+
   inset:0,
+
   background:"rgba(0,0,0,0.7)",
+
   display:"flex",
+
   justifyContent:"center",
+
   alignItems:"center"
+
 };
+
 
 
 const modal={
+
   background:"#020617",
+
   padding:30,
+
   borderRadius:12,
+
   width:320
+
 };
+
 
 
 const section={
+
   padding:40
+
 };
 
 
+
 const footer={
+
   textAlign:"center",
+
   padding:40,
+
   marginTop:40,
+
   borderTop:"1px solid #111"
+
 };
