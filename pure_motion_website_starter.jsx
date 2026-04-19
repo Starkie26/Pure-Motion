@@ -1,58 +1,50 @@
 import React, { useState } from "react";
 
-const brand = {
+const brand={
   bg:"#020617",
   card:"#0f172a",
   accent:"#22c55e",
   text:"#e5e7eb"
 };
 
-const categories = [
-
-  { id:"tracksuits", name:"Tracksuits", img:"/tracksuit1.png" },
-
-  { id:"jerseys", name:"Jerseys", img:"/Jersey.png" },
-
-  { id:"hoodies", name:"Hoodies", img:"/hoodie.png" },
-
-  { id:"dance", name:"Dance", img:"/irishdance.png" },
-
-  { id:"jackets", name:"Jackets", img:"/Jackets.jpg" },
-
-  { id:"sportswear", name:"Sportswear", img:"/SportKits.jpg" }
-
+const categories=[
+  {id:"tracksuits",name:"Tracksuits",img:"/tracksuit1.png"},
+  {id:"jerseys",name:"Jerseys",img:"/Jersey.png"},
+  {id:"hoodies",name:"Hoodies",img:"/hoodie.png"},
+  {id:"dance",name:"Dance",img:"/irishdance.png"},
+  {id:"jackets",name:"Jackets",img:"/Jackets.jpg"},
+  {id:"sportswear",name:"Sportswear",img:"/SportKits.jpg"}
 ];
 
-
-const products = {
+const products={
 
   tracksuits:[
-    { name:"Elite Tracksuit", img:"/tracksuit1.png" },
-    { name:"Pro Tracksuit", img:"/tracksuit2.png" }
+    {name:"Elite Tracksuit",img:"/tracksuit1.png"},
+    {name:"Pro Tracksuit",img:"/tracksuit2.png"}
   ],
 
   hoodies:[
-    { name:"Performance Hoodie", img:"/hoodie.png" },
-    { name:"Training Hoodie", img:"/hoodie2.png" }
+    {name:"Performance Hoodie",img:"/hoodie.png"},
+    {name:"Training Hoodie",img:"/hoodie2.png"}
   ],
 
   jerseys:[
-    { name:"Match Jersey", img:"/Jersey.png" },
-    { name:"Club Jersey", img:"/Jersey2.png" }
+    {name:"Match Jersey",img:"/Jersey.png"},
+    {name:"Club Jersey",img:"/Jersey2.png"}
   ],
 
   dance:[
-    { name:"Irish Dance Dress", img:"/irishdance.png" }
+    {name:"Irish Dance Dress",img:"/irishdance.png"}
   ],
 
   jackets:[
-    { name:"Performance Jacket", img:"/Jackets.jpg" },
-    { name:"Elite Jacket", img:"/Jackets2.jpg" }
+    {name:"Performance Jacket",img:"/Jackets.jpg"},
+    {name:"Elite Jacket",img:"/Jackets2.jpg"}
   ],
 
   sportswear:[
-    { name:"Sports Kit", img:"/SportKits.jpg" },
-    { name:"Training Sportswear", img:"/SportKits2.jpg" }
+    {name:"Sports Kit",img:"/SportKits.jpg"},
+    {name:"Training Sportswear",img:"/SportKits2.jpg"}
   ]
 
 };
@@ -60,21 +52,29 @@ const products = {
 
 export default function App(){
 
-  const [page,setPage]=useState("home");
-  const [selected,setSelected]=useState(null);
+  const[page,setPage]=useState("home");
+  const[selected,setSelected]=useState(null);
+  const[cart,setCart]=useState([]);
+
+  function addToCart(item){
+
+    setCart([...cart,item]);
+    setSelected(null);
+
+  }
 
   return(
 
     <div style={wrapper}>
 
-      <Nav setPage={setPage}/>
+      <Nav setPage={setPage} cartCount={cart.length}/>
 
 
       {page==="home" && (
 
         <>
 
-          <Hero setPage={setPage}/>
+          <Hero/>
 
           <CategoryGrid setPage={setPage}/>
 
@@ -89,7 +89,10 @@ export default function App(){
 
           <Section title={cat}>
 
-            <ProductGrid items={products[cat]} setSelected={setSelected}/>
+            <ProductGrid
+              items={products[cat]}
+              setSelected={setSelected}
+            />
 
           </Section>
 
@@ -98,7 +101,93 @@ export default function App(){
       ))}
 
 
-      {selected && <Modal item={selected} close={()=>setSelected(null)}/>}
+      {page==="cart" && (
+
+        <Section title="Quote Builder">
+
+          {cart.length===0 && <p>No products added yet</p>}
+
+          {cart.map((item,i)=>(
+
+            <div key={i} style={cartItem}>
+
+              <img src={item.img} style={{width:60}}/>
+
+              {item.name}
+
+            </div>
+
+          ))}
+
+
+          {cart.length>0 && (
+
+            <a
+              href={`mailto:enquiries@puremotion.com?subject=Quote request&body=I would like pricing for ${cart.map(p=>p.name).join(", ")}`}
+            >
+
+              <button style={cta}>
+
+                Request Quote
+
+              </button>
+
+            </a>
+
+          )}
+
+        </Section>
+
+      )}
+
+
+      {page==="contact" && (
+
+        <Section title="Contact Us">
+
+          <p>
+
+            Email or WhatsApp us for pricing and design enquiries.
+
+          </p>
+
+
+          <a href="mailto:enquiries@puremotion.com">
+
+            <button style={cta}>
+
+              Email Us
+
+            </button>
+
+          </a>
+
+
+          <a href="https://wa.me/" target="_blank">
+
+            <button style={whatsappBtn}>
+
+              WhatsApp
+
+            </button>
+
+          </a>
+
+        </Section>
+
+      )}
+
+
+      {selected && (
+
+        <Modal
+          item={selected}
+          close={()=>setSelected(null)}
+          addToCart={addToCart}
+        />
+
+      )}
+
 
       <Footer/>
 
@@ -110,7 +199,7 @@ export default function App(){
 
 
 
-function Nav({setPage}){
+function Nav({setPage,cartCount}){
 
   return(
 
@@ -131,6 +220,11 @@ function Nav({setPage}){
 
         ))}
 
+
+        <Btn label={`Quote (${cartCount})`} click={()=>setPage("cart")}/>
+
+        <Btn label="Contact" click={()=>setPage("contact")}/>
+
       </div>
 
     </div>
@@ -141,7 +235,7 @@ function Nav({setPage}){
 
 
 
-function Hero({setPage}){
+function Hero(){
 
   return(
 
@@ -151,28 +245,12 @@ function Hero({setPage}){
 
         <h1 style={heroTitle}>
 
-          Elite Teamwear &
-
-          <span style={{color:brand.accent}}> Custom Performance</span>
+          Premium Custom Teamwear
 
         </h1>
 
 
-        <p style={intro}>
-
-          Premium custom kits designed for clubs, teams and athletes.
-
-        </p>
-
-
         <Mission/>
-
-
-        <button style={cta} onClick={()=>setPage("tracksuits")}>
-
-          Browse Collection
-
-        </button>
 
       </div>
 
@@ -191,9 +269,9 @@ function CategoryGrid({setPage}){
 
   return(
 
-    <div style={categorySection}>
+    <div style={section}>
 
-      <h2>Browse Categories</h2>
+      <h2>Browse Products</h2>
 
 
       <div style={grid}>
@@ -202,7 +280,7 @@ function CategoryGrid({setPage}){
 
           <div key={cat.id}
 
-               style={categoryCard}
+               style={card}
 
                onClick={()=>setPage(cat.id)}
 
@@ -210,12 +288,7 @@ function CategoryGrid({setPage}){
 
             <img src={cat.img} style={img}/>
 
-
-            <div style={{marginTop:10,fontWeight:600}}>
-
-              {cat.name}
-
-            </div>
+            {cat.name}
 
           </div>
 
@@ -237,32 +310,7 @@ function Mission(){
 
     <div style={missionBox}>
 
-      <h3 style={{color:brand.accent}}>
-
-        Our Mission
-
-      </h3>
-
-
-      <p>
-
-        Pure Motion exists to make high-quality custom teamwear accessible to every club, team, and athlete.
-
-      </p>
-
-
-      <p>
-
-        Premium custom kits combining professional design with affordable pricing.
-
-      </p>
-
-
-      <p>
-
-        Helping grassroots clubs achieve elite level identity and performance.
-
-      </p>
+      Pure Motion makes premium custom sportswear accessible to every club and athlete.
 
     </div>
 
@@ -290,8 +338,7 @@ function ProductGrid({items,setSelected}){
 
           <img src={p.img} style={img}/>
 
-
-          <h3>{p.name}</h3>
+          {p.name}
 
         </div>
 
@@ -305,16 +352,7 @@ function ProductGrid({items,setSelected}){
 
 
 
-function Modal({item,close}){
-
-  const subject=`Enquiry about ${item.name}`;
-
-  const body=`Hi Pure Motion,%0D%0A%0D%0AI would like more information about ${item.name}.`;
-
-  const emailLink=`mailto:enquiries@puremotion.com?subject=${subject}&body=${body}`;
-
-  const whatsappLink=`https://wa.me/?text=I am interested in ${item.name}`;
-
+function Modal({item,close,addToCart}){
 
   return(
 
@@ -328,29 +366,35 @@ function Modal({item,close}){
         <h2>{item.name}</h2>
 
 
-        <p style={{opacity:0.7}}>
+        <button
 
-          Request pricing, sizes or custom branding options.
+          style={cta}
 
-        </p>
+          onClick={()=>addToCart(item)}
+
+        >
+
+          Add to Quote
+
+        </button>
 
 
-        <a href={emailLink} style={{textDecoration:"none"}}>
+        <a href={`mailto:enquiries@puremotion.com?subject=Enquiry about ${item.name}`}>
 
           <button style={cta}>
 
-            Email Enquiry
+            Email
 
           </button>
 
         </a>
 
 
-        <a href={whatsappLink} target="_blank">
+        <a href={`https://wa.me/?text=I am interested in ${item.name}`}>
 
           <button style={whatsappBtn}>
 
-            WhatsApp Enquiry
+            WhatsApp
 
           </button>
 
@@ -493,9 +537,7 @@ const hero={
 
   gridTemplateColumns:"1fr 1fr",
 
-  gap:40,
-
-  alignItems:"center"
+  gap:40
 
 };
 
@@ -503,7 +545,7 @@ const hero={
 
 const heroTitle={
 
-  fontSize:48
+  fontSize:44
 
 };
 
@@ -519,19 +561,9 @@ const heroImg={
 
 
 
-const intro={
-
-  opacity:0.8,
-
-  maxWidth:500
-
-};
-
-
-
 const missionBox={
 
-  marginTop:25,
+  marginTop:20,
 
   padding:20,
 
@@ -543,7 +575,7 @@ const missionBox={
 
 
 
-const categorySection={
+const section={
 
   padding:40
 
@@ -565,7 +597,7 @@ const grid={
 
 
 
-const categoryCard={
+const card={
 
   background:"#0f172a",
 
@@ -579,15 +611,15 @@ const categoryCard={
 
 
 
-const card={
+const cartItem={
 
-  background:"#0f172a",
+  display:"flex",
 
-  padding:16,
+  gap:10,
 
-  borderRadius:12,
+  alignItems:"center",
 
-  cursor:"pointer"
+  marginTop:10
 
 };
 
@@ -613,7 +645,7 @@ const cta={
 
   borderRadius:8,
 
-  marginTop:20,
+  marginTop:10,
 
   cursor:"pointer",
 
@@ -670,14 +702,6 @@ const modal={
   borderRadius:12,
 
   width:320
-
-};
-
-
-
-const section={
-
-  padding:40
 
 };
 
