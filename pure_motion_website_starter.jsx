@@ -4,7 +4,7 @@ const brand={
   bg:"#020617",
   card:"#0f172a",
   accent:"#22c55e",
-  accentSoft:"rgba(34,197,94,0.15)",
+  accentSoft:"rgba(34,197,94,0.12)",
   text:"#e5e7eb"
 };
 
@@ -146,11 +146,13 @@ export default function App(){
 function Nav({setPage,cartCount}){
   return(
     <div style={nav}>
+
       <div style={logo} onClick={()=>setPage("home")}>
         PURE MOTION
       </div>
 
-      <div style={{display:"flex",flexWrap:"wrap"}}>
+      <div style={navLinks}>
+
         {categories.map(c=>(
           <Btn key={c.id} label={c.name} click={()=>setPage(c.id)}/>
         ))}
@@ -158,7 +160,9 @@ function Nav({setPage,cartCount}){
         <Btn label="Club Shop" click={()=>setPage("clubshop")}/>
         <Btn label={`Quote (${cartCount})`} click={()=>setPage("cart")}/>
         <Btn label="Contact" click={()=>setPage("contact")}/>
+
       </div>
+
     </div>
   );
 }
@@ -222,18 +226,10 @@ function CategoryGrid({setPage}){
       <div style={grid}>
 
         {categories.map(cat=>(
-
-          <div key={cat.id}
-               style={cardHover}
-               onClick={()=>setPage(cat.id)}
-          >
-
+          <div key={cat.id} style={cardHover} onClick={()=>setPage(cat.id)}>
             <img src={cat.img} style={img}/>
-
             {cat.name}
-
           </div>
-
         ))}
 
       </div>
@@ -288,18 +284,10 @@ function ProductGrid({items,setSelected}){
     <div style={grid}>
 
       {items.map((p,i)=>(
-
-        <div key={i}
-             style={cardHover}
-             onClick={()=>setSelected(p)}
-        >
-
+        <div key={i} style={cardHover} onClick={()=>setSelected(p)}>
           <img src={p.img} style={img}/>
-
           {p.name}
-
         </div>
-
       ))}
 
     </div>
@@ -350,7 +338,6 @@ function Section({title,children}){
       </h1>
 
       {children}
-
     </div>
   );
 }
@@ -392,34 +379,57 @@ const wrapper={
   fontFamily:"Arial"
 };
 
+
+
 const nav={
   position:"sticky",
   top:0,
   background:brand.bg,
-  padding:20,
+  padding:"16px 20px",
   borderBottom:"1px solid #111",
   display:"flex",
   justifyContent:"space-between",
+  alignItems:"center",
+  flexWrap:"wrap",
+  gap:10,
   zIndex:10
 };
+
+
 
 const logo={
   color:brand.accent,
   fontWeight:900,
-  fontSize:"22px",
+  fontSize:"26px",
   letterSpacing:"1.5px",
   transform:"skewX(-14deg)",
-  textShadow:"0 0 10px rgba(34,197,94,0.6)",
+  textShadow:"0 0 12px rgba(34,197,94,0.6)",
   cursor:"pointer"
 };
 
-const navBtn={
-  marginLeft:15,
-  background:"transparent",
-  border:"none",
-  color:brand.text,
-  cursor:"pointer"
+
+
+const navLinks={
+  display:"flex",
+  flexWrap:"wrap",
+  gap:8
 };
+
+
+
+const navBtn={
+  background:brand.accentSoft,
+  border:"1px solid rgba(34,197,94,0.25)",
+  color:brand.accent,
+  padding:"8px 14px",
+  borderRadius:20,
+  fontSize:"14px",
+  fontWeight:600,
+  cursor:"pointer",
+  transition:"0.2s"
+};
+
+
 
 const hero={
   padding:40,
@@ -428,14 +438,20 @@ const hero={
   gap:40
 };
 
+
+
 const heroTitle={
   fontSize:46
 };
+
+
 
 const heroImg={
   width:"100%",
   borderRadius:20
 };
+
+
 
 const missionBox={
   marginTop:20,
@@ -445,9 +461,13 @@ const missionBox={
   background:brand.accentSoft
 };
 
+
+
 const section={
   padding:40
 };
+
+
 
 const grid={
   display:"grid",
@@ -456,11 +476,15 @@ const grid={
   marginTop:20
 };
 
+
+
 const card={
   background:brand.card,
   padding:16,
   borderRadius:12
 };
+
+
 
 const cardHover={
   background:brand.card,
@@ -470,6 +494,8 @@ const cardHover={
   transition:"0.2s"
 };
 
+
+
 const cartItem={
   display:"flex",
   gap:10,
@@ -477,10 +503,14 @@ const cartItem={
   marginTop:10
 };
 
+
+
 const img={
   width:"100%",
   borderRadius:10
 };
+
+
 
 const cta={
   background:brand.accent,
@@ -492,6 +522,8 @@ const cta={
   width:"100%"
 };
 
+
+
 const whatsappBtn={
   background:"#25D366",
   border:"none",
@@ -502,11 +534,15 @@ const whatsappBtn={
   width:"100%"
 };
 
+
+
 const ctaBanner={
   padding:40,
   textAlign:"center",
   background:brand.accentSoft
 };
+
+
 
 const modalBg={
   position:"fixed",
@@ -517,6 +553,8 @@ const modalBg={
   alignItems:"center"
 };
 
+
+
 const modal={
   background:brand.bg,
   padding:30,
@@ -524,12 +562,16 @@ const modal={
   width:320
 };
 
+
+
 const footer={
   textAlign:"center",
   padding:40,
   marginTop:40,
   borderTop:"1px solid #111"
 };
+
+
 
 const link={
   cursor:"pointer",
