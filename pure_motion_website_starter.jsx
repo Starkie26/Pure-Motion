@@ -4,6 +4,7 @@ const brand={
   bg:"#020617",
   card:"#0f172a",
   accent:"#22c55e",
+  accentSoft:"rgba(34,197,94,0.15)",
   text:"#e5e7eb"
 };
 
@@ -23,38 +24,30 @@ const clubProducts=[
 ];
 
 const products={
-
   tracksuits:[
     {name:"Elite Tracksuit",img:"/tracksuit1.png"},
     {name:"Pro Tracksuit",img:"/tracksuit2.png"}
   ],
-
   hoodies:[
     {name:"Performance Hoodie",img:"/hoodie.png"},
     {name:"Training Hoodie",img:"/hoodie2.png"}
   ],
-
   jerseys:[
     {name:"Match Jersey",img:"/Jersey.png"},
     {name:"Club Jersey",img:"/Jersey2.png"}
   ],
-
   dance:[
     {name:"Irish Dance Dress",img:"/irishdance.png"}
   ],
-
   jackets:[
     {name:"Performance Jacket",img:"/Jackets.jpg"},
     {name:"Elite Jacket",img:"/Jackets2.jpg"}
   ],
-
   sportswear:[
     {name:"Sports Kit",img:"/SportKits.jpg"},
     {name:"Training Sportswear",img:"/SportKits2.jpg"}
   ]
-
 };
-
 
 export default function App(){
 
@@ -73,179 +66,113 @@ export default function App(){
 
       <Nav setPage={setPage} cartCount={cart.length}/>
 
-
       {page==="home" && (
-
         <>
-
           <Hero/>
-
           <CategoryGrid setPage={setPage}/>
-
           <TrustSection/>
-
+          <CTASection setPage={setPage}/>
         </>
-
       )}
-
 
       {Object.keys(products).map(cat=>(
-
         page===cat && (
-
           <Section title={cat}>
-
             <ProductGrid items={products[cat]} setSelected={setSelected}/>
-
           </Section>
-
         )
-
       ))}
 
-
       {page==="clubshop" && (
-
         <Section title="Example Club Shop">
-
-          <p>
-            Each club can have their own private shop with personalised products.
-          </p>
-
           <ProductGrid items={clubProducts} setSelected={setSelected}/>
-
         </Section>
-
       )}
 
-
       {page==="cart" && (
-
         <Section title="Quote Builder">
 
           {cart.length===0 && <p>No products added yet</p>}
 
           {cart.map((item,i)=>(
-
             <div key={i} style={cartItem}>
-
               <img src={item.img} style={{width:60}}/>
-
               {item.name}
-
             </div>
-
           ))}
 
           {cart.length>0 && (
-
-            <a
-              href={`mailto:enquiries@puremotion.com?subject=Quote request&body=I would like pricing for ${cart.map(p=>p.name).join(", ")}`}
-            >
-
-              <button style={cta}>
-                Request Quote
-              </button>
-
+            <a href={`mailto:enquiries@puremotion.com?subject=Quote request&body=I would like pricing for ${cart.map(p=>p.name).join(", ")}`}>
+              <button style={cta}>Request Quote</button>
             </a>
-
           )}
 
         </Section>
-
       )}
 
-
       {page==="contact" && (
+        <Section title="Contact">
 
-        <Section title="Contact Us">
-
-          <p>
-            Email or WhatsApp us for pricing and design enquiries.
-          </p>
+          <p>Email or WhatsApp for pricing enquiries</p>
 
           <a href="mailto:enquiries@puremotion.com">
-
-            <button style={cta}>
-              Email Us
-            </button>
-
+            <button style={cta}>Email</button>
           </a>
 
           <a href="https://wa.me/" target="_blank">
-
-            <button style={whatsappBtn}>
-              WhatsApp
-            </button>
-
+            <button style={whatsappBtn}>WhatsApp</button>
           </a>
 
         </Section>
-
       )}
-
 
       {selected && (
-
-        <Modal item={selected} close={()=>setSelected(null)} addToCart={addToCart}/>
-
+        <Modal
+          item={selected}
+          close={()=>setSelected(null)}
+          addToCart={addToCart}
+        />
       )}
-
 
       <Footer setPage={setPage}/>
 
     </div>
 
   );
-
 }
 
 
 
 function Nav({setPage,cartCount}){
-
   return(
-
     <div style={nav}>
-
       <div style={logo} onClick={()=>setPage("home")}>
         PURE MOTION
       </div>
 
       <div style={{display:"flex",flexWrap:"wrap"}}>
-
         {categories.map(c=>(
-
           <Btn key={c.id} label={c.name} click={()=>setPage(c.id)}/>
-
         ))}
 
         <Btn label="Club Shop" click={()=>setPage("clubshop")}/>
-
         <Btn label={`Quote (${cartCount})`} click={()=>setPage("cart")}/>
-
         <Btn label="Contact" click={()=>setPage("contact")}/>
-
       </div>
-
     </div>
-
   );
-
 }
 
 
 
 function Hero(){
-
   return(
-
     <div style={hero}>
 
       <div>
 
         <h1 style={heroTitle}>
-          Premium Custom Teamwear
+          Performance Driven Teamwear
         </h1>
 
         <Mission/>
@@ -255,20 +182,16 @@ function Hero(){
       <img src="/hoodie.png" style={heroImg}/>
 
     </div>
-
   );
-
 }
 
 
 
 function Mission(){
-
   return(
-
     <div style={missionBox}>
 
-      <h3 style={{color:"#22c55e"}}>
+      <h3 style={{color:brand.accent}}>
         Our Mission
       </h3>
 
@@ -277,57 +200,21 @@ function Mission(){
       </p>
 
       <p>
-        We combine premium design, performance materials, and affordable pricing.
+        Premium design, strong finishing, and a wide product range built for grassroots sport.
       </p>
 
       <p>
-        Helping grassroots clubs achieve elite level identity and confidence.
+        Helping teams look professional and perform confidently.
       </p>
 
     </div>
-
   );
-
-}
-
-
-
-function TrustSection(){
-
-  return(
-
-    <div style={section}>
-
-      <h2>Why teams choose Pure Motion</h2>
-
-      <div style={grid}>
-
-        <div style={card}>Premium quality materials</div>
-
-        <div style={card}>Custom designs available</div>
-
-        <div style={card}>Affordable pricing</div>
-
-        <div style={card}>Fast turnaround</div>
-
-        <div style={card}>Low minimum orders</div>
-
-        <div style={card}>Wide product range</div>
-
-      </div>
-
-    </div>
-
-  );
-
 }
 
 
 
 function CategoryGrid({setPage}){
-
   return(
-
     <div style={section}>
 
       <h2>Browse Products</h2>
@@ -337,11 +224,8 @@ function CategoryGrid({setPage}){
         {categories.map(cat=>(
 
           <div key={cat.id}
-
-               style={card}
-
+               style={cardHover}
                onClick={()=>setPage(cat.id)}
-
           >
 
             <img src={cat.img} style={img}/>
@@ -355,27 +239,59 @@ function CategoryGrid({setPage}){
       </div>
 
     </div>
-
   );
+}
 
+
+
+function TrustSection(){
+  return(
+    <div style={section}>
+
+      <h2>Why teams choose Pure Motion</h2>
+
+      <div style={grid}>
+
+        <div style={card}>Premium quality materials</div>
+        <div style={card}>Custom designs available</div>
+        <div style={card}>Affordable pricing</div>
+        <div style={card}>Fast turnaround</div>
+        <div style={card}>Low minimum orders</div>
+        <div style={card}>Wide product range</div>
+
+      </div>
+
+    </div>
+  );
+}
+
+
+
+function CTASection({setPage}){
+  return(
+    <div style={ctaBanner}>
+
+      <h2>Start your custom kit today</h2>
+
+      <button style={cta} onClick={()=>setPage("contact")}>
+        Request Design
+      </button>
+
+    </div>
+  );
 }
 
 
 
 function ProductGrid({items,setSelected}){
-
   return(
-
     <div style={grid}>
 
       {items.map((p,i)=>(
 
         <div key={i}
-
-             style={card}
-
+             style={cardHover}
              onClick={()=>setSelected(p)}
-
         >
 
           <img src={p.img} style={img}/>
@@ -387,17 +303,13 @@ function ProductGrid({items,setSelected}){
       ))}
 
     </div>
-
   );
-
 }
 
 
 
 function Modal({item,close,addToCart}){
-
   return(
-
     <div style={modalBg} onClick={close}>
 
       <div style={modal} onClick={(e)=>e.stopPropagation()}>
@@ -415,37 +327,24 @@ function Modal({item,close,addToCart}){
         </button>
 
         <a href={`mailto:enquiries@puremotion.com?subject=Enquiry about ${item.name}`}>
-
-          <button style={cta}>
-            Email
-          </button>
-
+          <button style={cta}>Email</button>
         </a>
 
         <a href={`https://wa.me/?text=I am interested in ${item.name}`}>
-
-          <button style={whatsappBtn}>
-            WhatsApp
-          </button>
-
+          <button style={whatsappBtn}>WhatsApp</button>
         </a>
 
       </div>
 
     </div>
-
   );
-
 }
 
 
 
 function Section({title,children}){
-
   return(
-
     <div style={section}>
-
       <h1 style={{textTransform:"capitalize"}}>
         {title}
       </h1>
@@ -453,54 +352,42 @@ function Section({title,children}){
       {children}
 
     </div>
-
   );
-
 }
 
 
 
 function Btn({label,click}){
-
   return(
-
     <button onClick={click} style={navBtn}>
       {label}
     </button>
-
   );
-
 }
 
 
 
 function Footer({setPage}){
-
   return(
-
     <div style={footer}>
 
-      PURE MOTION • Custom Teamwear
+      PURE MOTION
 
       <div style={{marginTop:10}}>
-
         <span style={link} onClick={()=>setPage("contact")}>
           Contact
         </span>
-
       </div>
 
     </div>
-
   );
-
 }
 
 
 
 const wrapper={
-  background:"#020617",
-  color:"#e5e7eb",
+  background:brand.bg,
+  color:brand.text,
   minHeight:"100vh",
   fontFamily:"Arial"
 };
@@ -508,16 +395,21 @@ const wrapper={
 const nav={
   position:"sticky",
   top:0,
-  background:"#020617",
+  background:brand.bg,
   padding:20,
   borderBottom:"1px solid #111",
   display:"flex",
-  justifyContent:"space-between"
+  justifyContent:"space-between",
+  zIndex:10
 };
 
 const logo={
-  color:"#22c55e",
-  fontWeight:700,
+  color:brand.accent,
+  fontWeight:900,
+  fontSize:"22px",
+  letterSpacing:"1.5px",
+  transform:"skewX(-14deg)",
+  textShadow:"0 0 10px rgba(34,197,94,0.6)",
   cursor:"pointer"
 };
 
@@ -525,7 +417,7 @@ const navBtn={
   marginLeft:15,
   background:"transparent",
   border:"none",
-  color:"#e5e7eb",
+  color:brand.text,
   cursor:"pointer"
 };
 
@@ -537,7 +429,7 @@ const hero={
 };
 
 const heroTitle={
-  fontSize:44
+  fontSize:46
 };
 
 const heroImg={
@@ -549,7 +441,8 @@ const missionBox={
   marginTop:20,
   padding:20,
   border:"1px solid #1f2937",
-  borderRadius:12
+  borderRadius:12,
+  background:brand.accentSoft
 };
 
 const section={
@@ -564,10 +457,17 @@ const grid={
 };
 
 const card={
-  background:"#0f172a",
+  background:brand.card,
+  padding:16,
+  borderRadius:12
+};
+
+const cardHover={
+  background:brand.card,
   padding:16,
   borderRadius:12,
-  cursor:"pointer"
+  cursor:"pointer",
+  transition:"0.2s"
 };
 
 const cartItem={
@@ -583,7 +483,7 @@ const img={
 };
 
 const cta={
-  background:"#22c55e",
+  background:brand.accent,
   border:"none",
   padding:"12px 18px",
   borderRadius:8,
@@ -602,6 +502,12 @@ const whatsappBtn={
   width:"100%"
 };
 
+const ctaBanner={
+  padding:40,
+  textAlign:"center",
+  background:brand.accentSoft
+};
+
 const modalBg={
   position:"fixed",
   inset:0,
@@ -612,7 +518,7 @@ const modalBg={
 };
 
 const modal={
-  background:"#020617",
+  background:brand.bg,
   padding:30,
   borderRadius:12,
   width:320
@@ -627,5 +533,5 @@ const footer={
 
 const link={
   cursor:"pointer",
-  color:"#22c55e"
+  color:brand.accent
 };
