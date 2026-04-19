@@ -4,197 +4,181 @@ const brand = {
   bg: "#020617",
   card: "#0f172a",
   accent: "#22c55e",
-  accentGlow: "#4ade80",
   text: "#e5e7eb"
 };
 
 const products = {
   tracksuits: [
-    { img: "/tracksuit1.png", name: "Elite Performance Tracksuit" },
-    { img: "/tracksuit2.png", name: "Pro Training Tracksuit" }
-  ],
-  dance: [
-    { img: "/irishdance.png", name: "Irish Dance Performance Wear" }
+    { name: "Elite Tracksuit", img: "/tracksuit1.png", desc: "High performance training wear" },
+    { name: "Pro Tracksuit", img: "/tracksuit2.png", desc: "Premium team tracksuit" }
   ],
   hoodies: [
-    { img: "/hoodie.png", name: "Pure Motion Hoodie" }
+    { name: "Performance Hoodie", img: "/hoodie.png", desc: "Comfort & performance" }
+  ],
+  dance: [
+    { name: "Irish Dance Dress", img: "/irishdance.png", desc: "Competition ready design" }
   ],
   jerseys: [
-    { img: "/neonlogo.png", name: "Neon Performance Jersey" }
+    { name: "Neon Jersey", img: "/neonlogo.png", desc: "Custom club jerseys" }
   ]
 };
 
-function Card({ item }) {
-  return (
-    <div style={{
-      background: brand.card,
-      padding: 16,
-      borderRadius: 14,
-      transition: "0.3s",
-      cursor: "pointer",
-      border: "1px solid #1f2937"
-    }}
-    onMouseOver={e => e.currentTarget.style.transform = "translateY(-6px)"}
-    onMouseOut={e => e.currentTarget.style.transform = "translateY(0px)"}
-    >
-      <img
-        src={item.img}
-        style={{
-          width: "100%",
-          borderRadius: 10,
-          marginBottom: 12
-        }}
-      />
-      <div style={{ fontWeight: 600 }}>{item.name}</div>
-    </div>
-  );
-}
-
 export default function App() {
-  const [section, setSection] = useState("home");
 
-  const NavButton = ({ id, label }) => (
-    <button
-      onClick={() => setSection(id)}
-      style={{
-        background: "transparent",
-        border: "none",
-        color: brand.text,
-        marginRight: 20,
-        cursor: "pointer",
-        fontWeight: 500
-      }}
-    >
-      {label}
-    </button>
-  );
+  const [page, setPage] = useState("home");
+  const [selected, setSelected] = useState(null);
 
-  const Grid = ({ items }) => (
-    <div style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))",
-      gap: 20
-    }}>
-      {items.map((p, i) => <Card key={i} item={p} />)}
+  const Nav = () => (
+    <div style={navStyle}>
+
+      <div style={logoStyle} onClick={() => setPage("home")}>
+        PURE MOTION
+      </div>
+
+      <div>
+        <NavBtn label="Tracksuits" click={() => setPage("tracksuits")}/>
+        <NavBtn label="Jerseys" click={() => setPage("jerseys")}/>
+        <NavBtn label="Dance & Fitness" click={() => setPage("dance")}/>
+        <NavBtn label="Hoodies" click={() => setPage("hoodies")}/>
+        <NavBtn label="Club Shop" click={() => setPage("club")}/>
+        <NavBtn label="Custom Kit" click={() => setPage("custom")}/>
+        <NavBtn label="Contact" click={() => setPage("contact")}/>
+      </div>
+
     </div>
   );
 
+  const ProductGrid = ({ items }) => (
+    <div style={grid}>
+      {items.map((p,i) => (
+        <div
+          key={i}
+          style={card}
+          onClick={() => setSelected(p)}
+        >
+          <img src={p.img} style={img}/>
+          <h3>{p.name}</h3>
+        </div>
+      ))}
+    </div>
+  );
+
+
   return (
-    <div style={{
-      fontFamily: "Inter, Arial",
-      background: brand.bg,
-      color: brand.text,
-      minHeight: "100vh"
-    }}>
+    <div style={wrapper}>
 
-      {/* NAVBAR */}
-      <div style={{
-        padding: 24,
-        borderBottom: "1px solid #111827",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center"
-      }}>
+      <Nav/>
 
-        <div style={{
-          fontSize: 24,
-          fontWeight: 700,
-          color: brand.accent
-        }}>
-          PURE MOTION
-        </div>
+      {page === "home" && (
+        <div style={hero}>
 
-        <div>
-          <NavButton id="home" label="Home"/>
-          <NavButton id="tracksuits" label="Tracksuits"/>
-          <NavButton id="jerseys" label="Jerseys"/>
-          <NavButton id="dance" label="Dance & Fitness"/>
-          <NavButton id="hoodies" label="Hoodies"/>
-        </div>
+          <div>
 
-      </div>
+            <h1 style={heroTitle}>
+              Elite Teamwear &
+              <span style={{color:brand.accent}}> Custom Performance</span>
+            </h1>
 
+            <p style={{opacity:0.8}}>
+              Custom kits, tracksuits and performance apparel designed for teams, clubs and athletes.
+            </p>
 
-      {/* HERO */}
-      {section === "home" && (
-        <div style={{ padding: 40 }}>
-
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 40,
-            alignItems: "center"
-          }}>
-
-            <div>
-
-              <h1 style={{
-                fontSize: 52,
-                marginBottom: 20
-              }}>
-                Performance
-                <span style={{ color: brand.accent }}> Driven</span>
-              </h1>
-
-              <p style={{
-                opacity: 0.8,
-                marginBottom: 30,
-                lineHeight: 1.6
-              }}>
-                Premium teamwear, custom jerseys and elite performance apparel designed for clubs, athletes and teams.
-              </p>
-
-              <button
-                onClick={() => setSection("tracksuits")}
-                style={{
-                  background: brand.accent,
-                  border: "none",
-                  padding: "14px 22px",
-                  borderRadius: 8,
-                  fontWeight: 600,
-                  cursor: "pointer"
-                }}
-              >
-                Browse Collection
-              </button>
-
-            </div>
-
-            <img
-              src="/hoodie.png"
-              style={{
-                width: "100%",
-                borderRadius: 18
-              }}
-            />
+            <button style={cta} onClick={() => setPage("tracksuits")}>
+              View Collection
+            </button>
 
           </div>
 
+          <img src="/hoodie.png" style={{width:"100%", borderRadius:20}}/>
 
-          <h2 style={{ marginTop: 60 }}>Shop Categories</h2>
+        </div>
+      )}
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-            gap: 20,
-            marginTop: 20
-          }}>
 
-            <div onClick={() => setSection("tracksuits")} style={categoryCard}>
-              Tracksuits
-            </div>
+      {page === "tracksuits" && <Section title="Tracksuits"><ProductGrid items={products.tracksuits}/></Section>}
 
-            <div onClick={() => setSection("jerseys")} style={categoryCard}>
-              Jerseys
-            </div>
+      {page === "jerseys" && <Section title="Jerseys"><ProductGrid items={products.jerseys}/></Section>}
 
-            <div onClick={() => setSection("dance")} style={categoryCard}>
-              Dance & Fitness
-            </div>
+      {page === "dance" && <Section title="Dance & Fitness"><ProductGrid items={products.dance}/></Section>}
 
-            <div onClick={() => setSection("hoodies")} style={categoryCard}>
-              Hoodies
-            </div>
+      {page === "hoodies" && <Section title="Hoodies"><ProductGrid items={products.hoodies}/></Section>}
+
+      {page === "club" && (
+        <Section title="Club Shop">
+
+          <p style={desc}>
+            We build dedicated online shops for sports clubs, dance schools and organisations.
+          </p>
+
+          <ul>
+            <li>Club branded kits</li>
+            <li>Member ordering portal</li>
+            <li>Bulk pricing</li>
+            <li>Personalisation options</li>
+          </ul>
+
+          <button style={cta} onClick={() => setPage("contact")}>
+            Request Club Shop
+          </button>
+
+        </Section>
+      )}
+
+
+      {page === "custom" && (
+        <Section title="Custom Kit Design">
+
+          <p style={desc}>
+            Fully custom jerseys, teamwear and performance clothing built to your colours and branding.
+          </p>
+
+          <ul>
+            <li>Unlimited design revisions</li>
+            <li>Professional mockups</li>
+            <li>Premium materials</li>
+            <li>Fast production</li>
+          </ul>
+
+          <button style={cta} onClick={() => setPage("contact")}>
+            Start Design
+          </button>
+
+        </Section>
+      )}
+
+
+      {page === "contact" && (
+        <Section title="Contact">
+
+          <p style={desc}>
+            Email us to start your custom project or request pricing.
+          </p>
+
+          <div style={{marginTop:20}}>
+            enquiries@puremotion.com
+          </div>
+
+        </Section>
+      )}
+
+
+
+      {selected && (
+        <div style={modalBg} onClick={()=>setSelected(null)}>
+
+          <div style={modal}>
+
+            <img src={selected.img} style={{width:"100%", borderRadius:12}}/>
+
+            <h2>{selected.name}</h2>
+
+            <p style={{opacity:0.8}}>
+              {selected.desc}
+            </p>
+
+            <button style={cta}>
+              Request Info
+            </button>
 
           </div>
 
@@ -202,69 +186,122 @@ export default function App() {
       )}
 
 
-      {/* TRACKSUITS */}
-      {section === "tracksuits" && (
-        <Page title="Tracksuits">
-          <Grid items={products.tracksuits}/>
-        </Page>
-      )}
-
-
-      {/* JERSEYS */}
-      {section === "jerseys" && (
-        <Page title="Jerseys">
-          <Grid items={products.jerseys}/>
-        </Page>
-      )}
-
-
-      {/* DANCE */}
-      {section === "dance" && (
-        <Page title="Dance & Fitness Wear">
-          <Grid items={products.dance}/>
-        </Page>
-      )}
-
-
-      {/* HOODIES */}
-      {section === "hoodies" && (
-        <Page title="Hoodies">
-          <Grid items={products.hoodies}/>
-        </Page>
-      )}
-
-
-      {/* FOOTER */}
-      <div style={{
-        marginTop: 80,
-        padding: 30,
-        borderTop: "1px solid #111827",
-        textAlign: "center",
-        opacity: 0.6
-      }}>
-        enquiries@puremotion.com
-      </div>
+      <footer style={footer}>
+        PURE MOTION ©
+      </footer>
 
     </div>
   );
 }
 
 
-function Page({ title, children }) {
-  return (
-    <div style={{ padding: 40 }}>
-      <h1 style={{ marginBottom: 30 }}>{title}</h1>
+
+const wrapper = {
+  background:"#020617",
+  color:"#e5e7eb",
+  minHeight:"100vh",
+  fontFamily:"Arial"
+};
+
+const navStyle = {
+  padding:20,
+  borderBottom:"1px solid #111",
+  display:"flex",
+  justifyContent:"space-between"
+};
+
+const logoStyle = {
+  color:"#22c55e",
+  fontWeight:700,
+  cursor:"pointer"
+};
+
+const NavBtn = ({label,click}) => (
+  <button onClick={click} style={{
+    marginLeft:20,
+    background:"transparent",
+    border:"none",
+    color:"#e5e7eb",
+    cursor:"pointer"
+  }}>
+    {label}
+  </button>
+);
+
+
+const hero = {
+  padding:40,
+  display:"grid",
+  gridTemplateColumns:"1fr 1fr",
+  gap:40,
+  alignItems:"center"
+};
+
+const heroTitle = {
+  fontSize:48
+};
+
+const cta = {
+  background:"#22c55e",
+  border:"none",
+  padding:"12px 18px",
+  borderRadius:8,
+  marginTop:20,
+  cursor:"pointer"
+};
+
+const grid = {
+  display:"grid",
+  gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
+  gap:20
+};
+
+const card = {
+  background:"#0f172a",
+  padding:16,
+  borderRadius:12,
+  cursor:"pointer"
+};
+
+const img = {
+  width:"100%",
+  borderRadius:10
+};
+
+const footer = {
+  textAlign:"center",
+  padding:40,
+  marginTop:40,
+  borderTop:"1px solid #111"
+};
+
+const Section = ({title,children}) => (
+  <div style={{padding:40}}>
+    <h1>{title}</h1>
+    <div style={{marginTop:20}}>
       {children}
     </div>
-  );
-}
+  </div>
+);
 
-const categoryCard = {
-  padding: 30,
-  borderRadius: 14,
-  background: "#020617",
-  border: "1px solid #1f2937",
-  cursor: "pointer",
-  textAlign: "center",
-  fontWeight: 600
+
+const modalBg = {
+  position:"fixed",
+  inset:0,
+  background:"rgba(0,0,0,0.7)",
+  display:"flex",
+  justifyContent:"center",
+  alignItems:"center"
+};
+
+const modal = {
+  background:"#020617",
+  padding:30,
+  borderRadius:12,
+  width:320
+};
+
+const desc = {
+  opacity:0.8,
+  maxWidth:500
 };
