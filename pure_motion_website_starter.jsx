@@ -43,16 +43,7 @@ const products={
   ]
 };
 
-const sizes=[
-  "Kids",
-  "XS",
-  "S",
-  "M",
-  "L",
-  "XL",
-  "2XL",
-  "3XL"
-];
+const sizes=["Kids","XS","S","M","L","XL","2XL","3XL"];
 
 export default function App(){
 
@@ -62,15 +53,10 @@ export default function App(){
 
   function addToCart(item,size){
 
-    setCart([
-      ...cart,
-      {
-        ...item,
-        size
-      }
-    ]);
+    setCart([...cart,{...item,size}]);
 
     setSelected(null);
+
   }
 
   return(
@@ -80,21 +66,35 @@ export default function App(){
       <Nav setPage={setPage} cartCount={cart.length}/>
 
       {page==="home" && (
+
         <>
+
           <Hero/>
+
           <CategoryGrid setPage={setPage}/>
+
           <TrustSection/>
+
           <FAQSection/>
+
           <CTASection setPage={setPage}/>
+
         </>
+
       )}
 
       {Object.keys(products).map(cat=>(
+
         page===cat && (
+
           <Section title={cat}>
+
             <ProductGrid items={products[cat]} setSelected={setSelected}/>
+
           </Section>
+
         )
+
       ))}
 
       {page==="cart" && (
@@ -107,11 +107,7 @@ export default function App(){
 
               <img src={item.img} style={{width:60}}/>
 
-              {item.name}
-
-              <span style={{opacity:0.6}}>
-                {item.size}
-              </span>
+              {item.name} ({item.size})
 
             </div>
 
@@ -119,11 +115,9 @@ export default function App(){
 
           {cart.length>0 && (
 
-            <a href={`mailto:enquiries@puremotion.com?subject=Quote request&body=Items:%0D%0A${cart.map(p=>p.name+" - "+p.size).join("%0D%0A")}`}>
+            <a href={`mailto:enquiries@puremotion.com?subject=Quote request&body=${cart.map(p=>p.name+" "+p.size).join(", ")}`}>
 
-              <button style={cta}>
-                Request Quote
-              </button>
+              <button style={cta}>Request Quote</button>
 
             </a>
 
@@ -136,14 +130,18 @@ export default function App(){
       {selected && (
 
         <Modal
+
           item={selected}
+
           close={()=>setSelected(null)}
+
           addToCart={addToCart}
+
         />
 
       )}
 
-      <Footer setPage={setPage}/>
+      <Footer/>
 
     </div>
 
@@ -161,13 +159,9 @@ function Nav({setPage,cartCount}){
 
       <div style={logoWrap} onClick={()=>setPage("home")}>
 
-        <div style={logoIcon}>
-          PM
-        </div>
+        <div style={logoIcon}>PM</div>
 
-        <div style={logo}>
-          PURE MOTION
-        </div>
+        <div style={logo}>PURE MOTION</div>
 
       </div>
 
@@ -201,12 +195,16 @@ function Hero(){
       <div>
 
         <h1 style={heroTitle}>
+
           Performance Driven Teamwear
+
         </h1>
+
 
         <Mission/>
 
       </div>
+
 
       <img src="/hoodie.png" style={heroImg}/>
 
@@ -224,7 +222,32 @@ function Mission(){
 
     <div style={missionBox}>
 
-      Pure Motion delivers premium custom sportswear designed for teams and athletes.
+      <h3 style={{color:"#22c55e"}}>
+
+        Our Mission
+
+      </h3>
+
+
+      <p>
+
+        Pure Motion exists to make high-quality custom teamwear accessible to every club, team, and athlete.
+
+      </p>
+
+
+      <p>
+
+        We design and produce premium custom kits, tracksuits, and performance apparel that combine professional-level quality with affordable pricing.
+
+      </p>
+
+
+      <p>
+
+        Our aim is to bring quality design, strong finishing, and a wide range of products to grassroots clubs, ensuring high performance is not only achieved — but visible.
+
+      </p>
 
     </div>
 
@@ -241,6 +264,7 @@ function CategoryGrid({setPage}){
     <div style={section}>
 
       <h2>Browse Products</h2>
+
 
       <div style={grid}>
 
@@ -274,6 +298,7 @@ function TrustSection(){
 
       <h2>Why teams choose Pure Motion</h2>
 
+
       <div style={grid}>
 
         <div style={card}>Premium quality materials</div>
@@ -306,15 +331,16 @@ function FAQSection(){
 
       <h2>FAQ</h2>
 
+
       <div style={faqBox}>
 
         <p><strong>Minimum order?</strong><br/>Low minimums available.</p>
 
         <p><strong>Can we customise colours?</strong><br/>Yes, fully custom designs available.</p>
 
-        <p><strong>Can you add our club logo?</strong><br/>Yes, embroidery or print available.</p>
+        <p><strong>Can you add our club logo?</strong><br/>Yes.</p>
 
-        <p><strong>Delivery time?</strong><br/>Typically 2–4 weeks.</p>
+        <p><strong>Delivery time?</strong><br/>2–4 weeks typical.</p>
 
         <p><strong>Samples available?</strong><br/>Available on request.</p>
 
@@ -336,8 +362,11 @@ function CTASection({setPage}){
 
       <h2>Start your custom kit today</h2>
 
+
       <button style={cta} onClick={()=>setPage("tracksuits")}>
+
         Browse Products
+
       </button>
 
     </div>
@@ -386,33 +415,24 @@ function Modal({item,close,addToCart}){
 
         <img src={item.img} style={img}/>
 
+
         <h2>{item.name}</h2>
 
 
-        <select
-          style={dropdown}
-          value={size}
-          onChange={(e)=>setSize(e.target.value)}
-        >
+        <select style={dropdown} value={size} onChange={(e)=>setSize(e.target.value)}>
 
-          <option value="">
-            Select size
-          </option>
+          <option value="">Select size</option>
 
           {sizes.map(s=>(
-            <option key={s}>
-              {s}
-            </option>
+
+            <option key={s}>{s}</option>
+
           ))}
 
         </select>
 
 
-        <button
-          style={cta}
-          disabled={!size}
-          onClick={()=>addToCart(item,size)}
-        >
+        <button style={cta} disabled={!size} onClick={()=>addToCart(item,size)}>
 
           Add to Quote
 
@@ -462,7 +482,7 @@ function Btn({label,click}){
 
 
 
-function Footer({setPage}){
+function Footer(){
 
   return(
 
