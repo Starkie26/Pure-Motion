@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const brand={
   bg:"#020617",
@@ -45,9 +45,36 @@ const products={
 
 export default function App(){
 
-  const[page,setPage]=useState("home");
+  const getPage=()=>{
+    const path=window.location.pathname.replace("/","");
+    return path || "home";
+  };
+
+  const[page,setPageState]=useState(getPage());
   const[selected,setSelected]=useState(null);
   const[cart,setCart]=useState([]);
+  const[fade,setFade]=useState(true);
+
+  function setPage(newPage){
+
+    window.history.pushState({}, "", newPage==="home"?"/":"/"+newPage);
+
+    setFade(false);
+
+    setTimeout(()=>{
+      setPageState(newPage);
+      setFade(true);
+      window.scrollTo({top:0,behavior:"smooth"});
+    },120);
+
+  }
+
+  useEffect(()=>{
+    window.onpopstate=()=>{
+      setPageState(getPage());
+      window.scrollTo({top:0});
+    };
+  },[]);
 
   function addToCart(item){
 
@@ -61,58 +88,80 @@ export default function App(){
 
     <div style={wrapper}>
 
-      <Nav setPage={setPage} cartCount={cart.length}/>
+      <Nav
+        setPage={setPage}
+        cartCount={cart.length}
+        active={page}
+      />
 
-      {page==="home" && (
-        <>
-          <Hero/>
-          <CategoryGrid setPage={setPage}/>
-          <TrustSection/>
-          <FAQSection/>
-          <CTASection setPage={setPage}/>
-        </>
-      )}
+      <div style={{
+        opacity:fade?1:0,
+        transition:"0.15s"
+      }}>
 
-      {Object.keys(products).map(cat=>(
-        page===cat && (
-          <Section title={cat}>
-            <ProductGrid items={products[cat]} setSelected={setSelected}/>
+        {page==="home" && (
+          <>
+            <Hero/>
+            <CategoryGrid setPage={setPage}/>
+            <TrustSection/>
+            <FAQSection/>
+            <CTASection setPage={setPage}/>
+          </>
+        )}
+
+        {Object.keys(products).map(cat=>(
+          page===cat && (
+            <Section title={cat}>
+              <ProductGrid
+                items={products[cat]}
+                setSelected={setSelected}
+              />
+            </Section>
+          )
+        ))}
+
+        {page==="cart" && (
+
+          <Section title="Quote Builder">
+
+            {cart.length===0 && <p>No products added yet</p>}
+
+            {cart.map((item,i)=>(
+              <div key={i} style={cartItem}>
+                <img src={item.img} style={{width:60}}/>
+                {item.name}
+              </div>
+            ))}
+
+            {cart.length>0 && (
+
+              <a href={`mailto:enquiries@puremotion.com?subject=Quote request&body=${cart.map(p=>p.name).join(", ")}`}>
+
+                <button style={cta}>
+                  Request Quote
+                </button>
+
+              </a>
+
+            )}
+
           </Section>
-        )
-      ))}
 
-      {page==="cart" && (
-        <Section title="Quote Builder">
+        )}
 
-          {cart.length===0 && <p>No products added yet</p>}
-
-          {cart.map((item,i)=>(
-            <div key={i} style={cartItem}>
-              <img src={item.img} style={{width:60}}/>
-              {item.name}
-            </div>
-          ))}
-
-          {cart.length>0 && (
-            <a href={`mailto:enquiries@puremotion.com?subject=Quote request&body=${cart.map(p=>p.name).join(", ")}`}>
-              <button style={cta}>
-                Request Quote
-              </button>
-            </a>
-          )}
-
-        </Section>
-      )}
+      </div>
 
       {selected && (
+
         <Modal
           item={selected}
           close={()=>setSelected(null)}
           addToCart={addToCart}
         />
+
       )}
 
-      <Footer/>
+      <Footer setPage={setPage}/>
 
     </div>
 
@@ -122,7 +171,7 @@ export default function App(){
 
 
 
-function Nav({setPage,cartCount}){
+function Nav({setPage,cartCount,active}){
 
   return(
 
@@ -130,19 +179,34 @@ function Nav({setPage,cartCount}){
 
       <div style={logoWrap} onClick={()=>setPage("home")}>
 
-        <div style={logoIcon}>PM</div>
+        <div style={logoIcon}>
+          PM
+        </div>
 
-        <div style={logo}>PURE MOTION</div>
+        <div style={logo}>
+          PURE MOTION
+        </div>
 
       </div>
 
       <div style={navLinks}>
 
         {categories.map(c=>(
-          <Btn key={c.id} label={c.name} click={()=>setPage(c.id)}/>
+
+          <Btn
+            key={c.id}
+            label={c.name}
+            click={()=>setPage(c.id)}
+            active={active===c.id}
+          />
+
         ))}
 
-        <Btn label={`Quote (${cartCount})`} click={()=>setPage("cart")}/>
+        <Btn
+          label={`Quote (${cartCount})`}
+          click={()=>setPage("cart")}
+          active={active==="cart"}
+        />
 
       </div>
 
@@ -186,7 +250,7 @@ function Mission(){
 
     <div style={missionBox}>
 
-      <h3 style={{color:"#22c55e"}}>
+      <h3 style={{color:brand.accent}}>
         Our Mission
       </h3>
 
@@ -221,10 +285,15 @@ function CategoryGrid({setPage}){
       <div style={grid}>
 
         {categories.map(cat=>(
+
           <div key={cat.id} style={cardHover} onClick={()=>setPage(cat.id)}>
+
             <img src={cat.img} style={img}/>
+
             {cat.name}
+
           </div>
+
         ))}
 
       </div>
@@ -248,10 +317,15 @@ function TrustSection(){
       <div style={grid}>
 
         <div style={card}>Premium quality materials</div>
+
         <div style={card}>Custom designs available</div>
+
         <div style={card}>Affordable pricing</div>
+
         <div style={card}>Fast turnaround</div>
+
         <div style={card}>Low minimum orders</div>
+
         <div style={card}>Wide product range</div>
 
       </div>
@@ -300,7 +374,9 @@ function CTASection({setPage}){
 
     <div style={ctaBanner}>
 
-      <h2>Start your custom kit today</h2>
+      <h2>
+        Start your custom kit today
+      </h2>
 
       <button style={cta} onClick={()=>setPage("tracksuits")}>
         Browse Products
@@ -321,10 +397,15 @@ function ProductGrid({items,setSelected}){
     <div style={grid}>
 
       {items.map((p,i)=>(
+
         <div key={i} style={cardHover} onClick={()=>setSelected(p)}>
+
           <img src={p.img} style={img}/>
+
           {p.name}
+
         </div>
+
       ))}
 
     </div>
@@ -356,15 +437,19 @@ function Modal({item,close,addToCart}){
         </button>
 
         <a href={`mailto:enquiries@puremotion.com?subject=Enquiry about ${item.name}`}>
+
           <button style={cta}>
             Email Enquiry
           </button>
+
         </a>
 
         <a href={`https://wa.me/?text=I am interested in ${item.name}`} target="_blank">
+
           <button style={whatsappBtn}>
             WhatsApp Enquiry
           </button>
+
         </a>
 
       </div>
@@ -395,24 +480,40 @@ function Section({title,children}){
 
 
 
-function Btn({label,click}){
+function Btn({label,click,active}){
 
   return(
-    <button onClick={click} style={navBtn}>
+
+    <button
+
+      onClick={click}
+
+      style={{
+        ...navBtn,
+        background:active?brand.accent:"#111",
+        color:active?"#000":brand.text
+      }}
+
+    >
+
       {label}
+
     </button>
+
   );
 
 }
 
 
 
-function Footer(){
+function Footer({setPage}){
 
   return(
 
     <div style={footer}>
+
       PURE MOTION
+
     </div>
 
   );
@@ -439,7 +540,8 @@ const nav={
   display:"flex",
   justifyContent:"space-between",
   alignItems:"center",
-  flexWrap:"wrap"
+  flexWrap:"wrap",
+  zIndex:10
 };
 
 
@@ -481,12 +583,9 @@ const navLinks={
 
 
 const navBtn={
-  background:brand.accentSoft,
-  border:"1px solid rgba(34,197,94,0.25)",
-  color:brand.accent,
+  border:"none",
   padding:"8px 14px",
   borderRadius:20,
-  fontSize:"14px",
   cursor:"pointer"
 };
 
