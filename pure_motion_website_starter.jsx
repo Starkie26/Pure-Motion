@@ -15,7 +15,7 @@ export default function PureMotionWebsite() {
           ["Dancewear","dance"],
           ["Contact","contact"]
         ].map(([label,value])=>(
-          <button key={value} onClick={()=>setPage(value)} style={{background:"none",border:"none",color:"white",cursor:"pointer",fontSize:"15px",opacity:0.8}}>
+          <button key={value} onClick={()=>setPage(value)} style={{background:"none",border:"none",color:"white",cursor:"pointer",fontSize:"15px",opacity:0.85}}>
             {label}
           </button>
         ))}
@@ -47,7 +47,7 @@ export default function PureMotionWebsite() {
         <>
           <section style={{padding:"120px 20px",textAlign:"center",background:"radial-gradient(circle at 30% 20%, #0ea5e9 0%, transparent 40%), radial-gradient(circle at 80% 40%, #22c55e 0%, transparent 40%)"}}>
             <h1 style={{fontSize:"56px",letterSpacing:"2px"}}>PURE MOTION</h1>
-            <p style={{opacity:0.8,fontSize:"20px"}}>Performance sportswear built for teams & athletes</p>
+            <p style={{opacity:0.85,fontSize:"20px"}}>Performance sportswear built for teams, gyms and athletes</p>
           </section>
 
           <Section>
@@ -57,19 +57,19 @@ export default function PureMotionWebsite() {
 
               <Card
                 title="Jerseys"
-                img="/Screenshot 2026-04-19 at 17.18.55.png"
+                img="/hoodie.png"
                 onClick={()=>setPage("jerseys")}
               />
 
               <Card
                 title="Tracksuits"
-                img="/Screenshot 2026-04-19 at 17.18.20.png"
+                img="/tracksuit1.png"
                 onClick={()=>setPage("tracksuits")}
               />
 
               <Card
                 title="Dancewear"
-                img="/Screenshot 2026-04-19 at 17.18.46.png"
+                img="/irishdance.png"
                 onClick={()=>setPage("dance")}
               />
 
@@ -81,7 +81,7 @@ export default function PureMotionWebsite() {
       {page==="jerseys" && (
         <Section>
           <h2>Jersey Designs</h2>
-          <img src="/Screenshot 2026-04-19 at 17.18.55.png" style={{width:"100%",borderRadius:"16px"}} />
+          <img src="/neonlogo.png" style={{width:"100%",borderRadius:"16px"}} />
         </Section>
       )}
 
@@ -91,11 +91,9 @@ export default function PureMotionWebsite() {
 
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:"20px"}}>
 
-            <img src="/Screenshot 2026-04-19 at 17.18.20.png" style={{width:"100%",borderRadius:"16px"}} />
+            <img src="/tracksuit1.png" style={{width:"100%",borderRadius:"16px"}} />
 
-            <img src="/Screenshot 2026-04-19 at 17.18.29.png" style={{width:"100%",borderRadius:"16px"}} />
-
-            <img src="/Screenshot 2026-04-19 at 17.18.37.png" style={{width:"100%",borderRadius:"16px"}} />
+            <img src="/tracksuit2.png" style={{width:"100%",borderRadius:"16px"}} />
 
           </div>
         </Section>
@@ -104,7 +102,7 @@ export default function PureMotionWebsite() {
       {page==="dance" && (
         <Section>
           <h2>Dance & Fitness Wear</h2>
-          <img src="/Screenshot 2026-04-19 at 17.18.46.png" style={{width:"100%",borderRadius:"16px"}} />
+          <img src="/irishdance.png" style={{width:"100%",borderRadius:"16px"}} />
         </Section>
       )}
 
