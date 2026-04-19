@@ -55,7 +55,6 @@ export default function App(){
   const [page,setPage]=useState("home");
   const [selected,setSelected]=useState(null);
 
-
   return(
 
     <div style={wrapper}>
@@ -261,19 +260,56 @@ function ProductGrid({items,setSelected}){
 
 function Modal({item,close}){
 
+  const [sent,setSent]=useState(false);
+
   return(
 
     <div style={modalBg} onClick={close}>
 
-      <div style={modal}>
+      <div style={modal} onClick={(e)=>e.stopPropagation()}>
 
         <img src={item.img} style={img}/>
 
         <h2>{item.name}</h2>
 
-        <button style={cta}>
-          Request Info
-        </button>
+        {!sent ? (
+
+          <form
+            onSubmit={(e)=>{
+              e.preventDefault();
+              setSent(true);
+            }}
+          >
+
+            <input placeholder="Name" required style={input}/>
+
+            <input placeholder="Email" required style={input}/>
+
+            <textarea
+              placeholder={"Message about "+item.name}
+              rows="4"
+              style={input}
+            />
+
+            <button style={cta}>
+              Send Enquiry
+            </button>
+
+          </form>
+
+        ) : (
+
+          <div>
+
+            <p>Enquiry ready ✔</p>
+
+            <p style={{opacity:0.7}}>
+              Next step we connect email sending.
+            </p>
+
+          </div>
+
+        )}
 
       </div>
 
@@ -435,6 +471,17 @@ const card={
 const img={
   width:"100%",
   borderRadius:10
+};
+
+
+const input={
+  width:"100%",
+  marginTop:10,
+  padding:10,
+  borderRadius:6,
+  border:"1px solid #1f2937",
+  background:"#020617",
+  color:"#e5e7eb"
 };
 
 
