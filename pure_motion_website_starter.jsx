@@ -146,18 +146,14 @@ export default function App(){
         <Section title="Contact Us">
 
           <p>
-
             Email or WhatsApp us for pricing and design enquiries.
-
           </p>
 
 
           <a href="mailto:enquiries@puremotion.com">
 
             <button style={cta}>
-
               Email Us
-
             </button>
 
           </a>
@@ -166,9 +162,7 @@ export default function App(){
           <a href="https://wa.me/" target="_blank">
 
             <button style={whatsappBtn}>
-
               WhatsApp
-
             </button>
 
           </a>
@@ -206,9 +200,7 @@ function Nav({setPage,cartCount}){
     <div style={nav}>
 
       <div style={logo} onClick={()=>setPage("home")}>
-
         PURE MOTION
-
       </div>
 
 
@@ -244,9 +236,7 @@ function Hero(){
       <div>
 
         <h1 style={heroTitle}>
-
           Premium Custom Teamwear
-
         </h1>
 
 
@@ -256,6 +246,42 @@ function Hero(){
 
 
       <img src="/hoodie.png" style={heroImg}/>
+
+    </div>
+
+  );
+
+}
+
+
+
+function Mission(){
+
+  return(
+
+    <div style={missionBox}>
+
+      <h3 style={{
+        color:"#22c55e",
+        marginBottom:10
+      }}>
+        Our Mission
+      </h3>
+
+
+      <p style={{opacity:0.9,lineHeight:1.6}}>
+        Pure Motion exists to make high-quality custom teamwear accessible to every club, team, and athlete.
+      </p>
+
+
+      <p style={{opacity:0.75,lineHeight:1.6,marginTop:10}}>
+        We design and produce premium custom kits, tracksuits, and performance apparel that combine professional-level quality with affordable pricing.
+      </p>
+
+
+      <p style={{opacity:0.75,lineHeight:1.6,marginTop:10}}>
+        Our aim is to bring quality design, strong finishing, and a wide range of products to grassroots clubs, ensuring high performance is not only achieved — but visible.
+      </p>
 
     </div>
 
@@ -295,22 +321,6 @@ function CategoryGrid({setPage}){
         ))}
 
       </div>
-
-    </div>
-
-  );
-
-}
-
-
-
-function Mission(){
-
-  return(
-
-    <div style={missionBox}>
-
-      Pure Motion makes premium custom sportswear accessible to every club and athlete.
 
     </div>
 
@@ -362,29 +372,21 @@ function Modal({item,close,addToCart}){
 
         <img src={item.img} style={img}/>
 
-
         <h2>{item.name}</h2>
 
 
         <button
-
           style={cta}
-
           onClick={()=>addToCart(item)}
-
         >
-
           Add to Quote
-
         </button>
 
 
         <a href={`mailto:enquiries@puremotion.com?subject=Enquiry about ${item.name}`}>
 
           <button style={cta}>
-
             Email
-
           </button>
 
         </a>
@@ -393,9 +395,7 @@ function Modal({item,close,addToCart}){
         <a href={`https://wa.me/?text=I am interested in ${item.name}`}>
 
           <button style={whatsappBtn}>
-
             WhatsApp
-
           </button>
 
         </a>
@@ -417,11 +417,8 @@ function Section({title,children}){
     <div style={section}>
 
       <h1 style={{textTransform:"capitalize"}}>
-
         {title}
-
       </h1>
-
 
       {children}
 
@@ -438,9 +435,7 @@ function Btn({label,click}){
   return(
 
     <button onClick={click} style={navBtn}>
-
       {label}
-
     </button>
 
   );
@@ -454,9 +449,7 @@ function Footer(){
   return(
 
     <div style={footer}>
-
       PURE MOTION
-
     </div>
 
   );
@@ -466,255 +459,129 @@ function Footer(){
 
 
 const wrapper={
-
   background:"#020617",
-
   color:"#e5e7eb",
-
   minHeight:"100vh",
-
   fontFamily:"Arial"
-
 };
-
-
 
 const nav={
-
   position:"sticky",
-
   top:0,
-
   background:"#020617",
-
   padding:20,
-
   borderBottom:"1px solid #111",
-
   display:"flex",
-
   justifyContent:"space-between",
-
   zIndex:10
-
 };
-
-
 
 const logo={
-
   color:"#22c55e",
-
   fontWeight:700,
-
   cursor:"pointer"
-
 };
-
-
 
 const navBtn={
-
   marginLeft:15,
-
   background:"transparent",
-
   border:"none",
-
   color:"#e5e7eb",
-
   cursor:"pointer"
-
 };
-
-
 
 const hero={
-
   padding:40,
-
   display:"grid",
-
   gridTemplateColumns:"1fr 1fr",
-
   gap:40
-
 };
-
-
 
 const heroTitle={
-
   fontSize:44
-
 };
-
-
 
 const heroImg={
-
   width:"100%",
-
   borderRadius:20
-
 };
-
-
 
 const missionBox={
-
   marginTop:20,
-
   padding:20,
-
   border:"1px solid #1f2937",
-
   borderRadius:12
-
 };
-
-
 
 const section={
-
   padding:40
-
 };
-
-
 
 const grid={
-
   display:"grid",
-
   gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
-
   gap:20,
-
   marginTop:20
-
 };
-
-
 
 const card={
-
   background:"#0f172a",
-
   padding:16,
-
   borderRadius:12,
-
   cursor:"pointer"
-
 };
-
-
 
 const cartItem={
-
   display:"flex",
-
   gap:10,
-
   alignItems:"center",
-
   marginTop:10
-
 };
-
-
 
 const img={
-
   width:"100%",
-
   borderRadius:10
-
 };
-
-
 
 const cta={
-
   background:"#22c55e",
-
   border:"none",
-
   padding:"12px 18px",
-
   borderRadius:8,
-
   marginTop:10,
-
   cursor:"pointer",
-
   width:"100%"
-
 };
-
-
 
 const whatsappBtn={
-
   background:"#25D366",
-
   border:"none",
-
   padding:"12px 18px",
-
   borderRadius:8,
-
   marginTop:10,
-
   cursor:"pointer",
-
   width:"100%"
-
 };
-
-
 
 const modalBg={
-
   position:"fixed",
-
   inset:0,
-
   background:"rgba(0,0,0,0.7)",
-
   display:"flex",
-
   justifyContent:"center",
-
   alignItems:"center"
-
 };
-
-
 
 const modal={
-
   background:"#020617",
-
   padding:30,
-
   borderRadius:12,
-
   width:320
-
 };
 
-
-
 const footer={
-
   textAlign:"center",
-
   padding:40,
-
   marginTop:40,
-
   borderTop:"1px solid #111"
-
 };
