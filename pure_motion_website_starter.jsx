@@ -274,7 +274,7 @@ return(
 
 {categories.map(cat=>(
 
-<div style={cardHover} onClick={()=>setPage(cat.id)}>
+<div key={cat.id} style={cardHover} onClick={()=>setPage(cat.id)}>
 
 <img src={cat.img} style={img}/>
 
@@ -487,7 +487,7 @@ return(
 <div style={navLinks}>
 
 {categories.map(c=>(
-<Btn label={c.name} click={()=>setPage(c.id)} active={active===c.id}/>
+<Btn key={c.id} label={c.name} click={()=>setPage(c.id)} active={active===c.id}/>
 ))}
 
 <Btn label={`Quote (${cartCount})`} click={()=>setPage("cart")} active={active==="cart"}/>
@@ -558,56 +558,77 @@ enquiries@puremotion.com
 
 const wrapper={background:brand.bg,color:brand.text,minHeight:"100vh",fontFamily:"Arial"};
 
-const nav={position:"sticky",top:0,background:brand.bg,padding:"16px",display:"flex",justifyContent:"space-between",flexWrap:"wrap",zIndex:10};
+const nav={
+position:"sticky",
+top:0,
+background:brand.bg,
+padding:"18px 18px 10px 18px",
+borderBottom:"1px solid #111",
+display:"flex",
+flexDirection:"column",
+alignItems:"flex-start",
+gap:14,
+zIndex:10
+};
 
-const logoWrap={display:"flex",gap:10,cursor:"pointer"};
+const logoWrap={
+display:"flex",
+alignItems:"center",
+gap:10,
+cursor:"pointer",
+width:"100%",
+justifyContent:"space-between"
+};
 
 const logoIcon={background:brand.accent,padding:"6px 10px",borderRadius:6,color:"#000",fontWeight:800};
 
 const logo={color:brand.accent,fontWeight:900,fontSize:"22px",transform:"skewX(-12deg)"};
 
-const navLinks={display:"flex",gap:8,flexWrap:"wrap"};
+const navLinks={
+display:"flex",
+flexWrap:"wrap",
+gap:10,
+width:"100%",
+marginTop:6
+};
 
-const navBtn={padding:"8px 14px",borderRadius:20,border:"none",cursor:"pointer"};
+const navBtn={
+padding:"10px 16px",
+borderRadius:22,
+border:"1px solid rgba(255,255,255,0.06)",
+cursor:"pointer",
+fontSize:14,
+fontWeight:600
+};
 
-const hero={padding:40,display:"grid",gridTemplateColumns:"1fr 1fr",gap:40};
+const hero={
+padding:"30px 20px",
+display:"grid",
+gridTemplateColumns:"1fr",
+gap:25
+};
 
-const heroTitle={fontSize:42};
+const heroTitle={fontSize:34};
 
 const heroImg={width:"100%",borderRadius:20};
 
 const missionBox={marginTop:20,padding:20,background:brand.accentSoft,borderRadius:12};
 
 const bigLogo={
-fontSize:54,
+fontSize:48,
 fontWeight:900,
 color:brand.accent,
-letterSpacing:3,
-transform:"skewX(-14deg)",
-textShadow:"0 0 22px rgba(34,197,94,0.4)",
+letterSpacing:2,
+transform:"skewX(-12deg)",
+textShadow:"0 0 18px rgba(34,197,94,0.35)",
 marginBottom:10
 };
 
-const impactBox={
-marginTop:20,
-background:brand.card,
-padding:20,
-borderRadius:14
-};
+const impactBox={marginTop:20,background:brand.card,padding:20,borderRadius:14};
 
-const impactGrid={
-display:"grid",
-gridTemplateColumns:"repeat(2,1fr)",
-gap:12
-};
+const impactGrid={display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12};
 
-const impactCard={
-background:brand.accentSoft,
-padding:14,
-borderRadius:10,
-textAlign:"center",
-fontWeight:600
-};
+const impactCard={background:brand.accentSoft,padding:14,borderRadius:10,textAlign:"center",fontWeight:600};
 
 const section={padding:40};
 
