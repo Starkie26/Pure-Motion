@@ -96,19 +96,13 @@ return(
 
 <Hero/>
 
-<Featured setPage={setPage}/>
-
 <CategoryGrid setPage={setPage}/>
-
-<Delivery/>
 
 <TrustSection/>
 
 <FAQSection/>
 
 <ContactSection/>
-
-<SocialSection/>
 
 </>
 )}
@@ -180,11 +174,17 @@ return(
 
 <div>
 
+<div style={bigLogo}>
+PURE MOTION
+</div>
+
 <h1 style={heroTitle}>
 Elite Teamwear & Custom Performance
 </h1>
 
 <Mission/>
+
+<Impact/>
 
 </div>
 
@@ -228,76 +228,28 @@ Our aim is to bring quality design, strong finishing, and a wide range of produc
 
 
 
-function Featured({setPage}){
+function Impact(){
 
 return(
 
-<div style={section}>
+<div style={impactBox}>
 
-<h2>Popular Products</h2>
+<div style={impactGrid}>
 
-<div style={grid}>
-
-{products.tracksuits.slice(0,1).map(p=>(
-<div style={cardHover} onClick={()=>setPage("tracksuits")}>
-
-<img src={p.img} style={img}/>
-
-{p.name}
-
-</div>
-))}
-
-{products.hoodies.slice(0,1).map(p=>(
-<div style={cardHover} onClick={()=>setPage("hoodies")}>
-
-<img src={p.img} style={img}/>
-
-{p.name}
-
-</div>
-))}
-
-{products.jerseys.slice(0,1).map(p=>(
-<div style={cardHover} onClick={()=>setPage("jerseys")}>
-
-<img src={p.img} style={img}/>
-
-{p.name}
-
-</div>
-))}
-
+<div style={impactCard}>
+Professional finish
 </div>
 
+<div style={impactCard}>
+Designed for clubs
 </div>
 
-);
-
-}
-
-
-
-function Delivery(){
-
-return(
-
-<div style={section}>
-
-<h2>Fast turnaround</h2>
-
-<div style={grid}>
-
-<div style={card}>
-Designed for clubs & teams
+<div style={impactCard}>
+Custom colours available
 </div>
 
-<div style={card}>
-Delivery typically 2–4 weeks
-</div>
-
-<div style={card}>
-Bulk pricing available
+<div style={impactCard}>
+Affordable pricing
 </div>
 
 </div>
@@ -447,26 +399,6 @@ Send Enquiry
 </button>
 
 </div>
-
-</div>
-
-);
-
-}
-
-
-
-function SocialSection(){
-
-return(
-
-<div style={section}>
-
-<h2>Follow Pure Motion</h2>
-
-<p style={{opacity:0.7}}>
-Instagram coming soon
-</p>
 
 </div>
 
@@ -640,11 +572,42 @@ const navBtn={padding:"8px 14px",borderRadius:20,border:"none",cursor:"pointer"}
 
 const hero={padding:40,display:"grid",gridTemplateColumns:"1fr 1fr",gap:40};
 
-const heroTitle={fontSize:46};
+const heroTitle={fontSize:42};
 
 const heroImg={width:"100%",borderRadius:20};
 
 const missionBox={marginTop:20,padding:20,background:brand.accentSoft,borderRadius:12};
+
+const bigLogo={
+fontSize:54,
+fontWeight:900,
+color:brand.accent,
+letterSpacing:3,
+transform:"skewX(-14deg)",
+textShadow:"0 0 22px rgba(34,197,94,0.4)",
+marginBottom:10
+};
+
+const impactBox={
+marginTop:20,
+background:brand.card,
+padding:20,
+borderRadius:14
+};
+
+const impactGrid={
+display:"grid",
+gridTemplateColumns:"repeat(2,1fr)",
+gap:12
+};
+
+const impactCard={
+background:brand.accentSoft,
+padding:14,
+borderRadius:10,
+textAlign:"center",
+fontWeight:600
+};
 
 const section={padding:40};
 
