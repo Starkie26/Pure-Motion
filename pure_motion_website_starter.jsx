@@ -57,7 +57,7 @@ const[fade,setFade]=useState(true);
 
 function setPage(newPage){
 
-window.history.pushState({}, "", newPage==="home"?"/":"/"+newPage);
+window.history.pushState({page:newPage}, "", newPage==="home"?"/":"/"+newPage);
 
 setFade(false);
 
@@ -69,12 +69,34 @@ window.scrollTo({top:0,behavior:"smooth"});
 
 }
 
+function openProduct(item){
+
+window.history.pushState({modal:true},"");
+
+setSelected(item);
+
+}
+
+function closeProduct(){
+
+window.history.back();
+
+}
+
 useEffect(()=>{
-window.onpopstate=()=>{
+
+window.onpopstate=(event)=>{
+
+if(selected){
+setSelected(null);
+return;
+}
+
 setPageState(getPage());
-window.scrollTo({top:0});
+
 };
-},[]);
+
+},[selected]);
 
 function addToCart(item){
 
@@ -93,24 +115,18 @@ return(
 
 {page==="home"&&(
 <>
-
 <Hero/>
-
 <CategoryGrid setPage={setPage}/>
-
 <TrustSection/>
-
 <FAQSection/>
-
 <ContactSection/>
-
 </>
 )}
 
 {Object.keys(products).map(cat=>(
 page===cat&&(
 <Section title={cat}>
-<ProductGrid items={products[cat]} setSelected={setSelected}/>
+<ProductGrid items={products[cat]} openProduct={openProduct}/>
 </Section>
 )
 ))}
@@ -150,7 +166,7 @@ Request Quote
 
 <Modal
 item={selected}
-close={()=>setSelected(null)}
+close={closeProduct}
 addToCart={addToCart}
 />
 
@@ -166,135 +182,7 @@ addToCart={addToCart}
 
 
 
-function Hero(){
-
-return(
-
-<div style={hero}>
-
-<div>
-
-<div style={bigLogo}>
-PURE MOTION
-</div>
-
-<h1 style={heroTitle}>
-Elite Teamwear & Custom Performance
-</h1>
-
-<Mission/>
-
-<Impact/>
-
-</div>
-
-<img src="/hoodie.png" style={heroImg}/>
-
-</div>
-
-);
-
-}
-
-
-
-function Mission(){
-
-return(
-
-<div style={missionBox}>
-
-<h3 style={{color:brand.accent}}>
-Our Mission
-</h3>
-
-<p>
-Pure Motion exists to make high-quality custom teamwear accessible to every club, team, and athlete.
-</p>
-
-<p>
-We design and produce premium custom kits, tracksuits, and performance apparel that combine professional-level quality with affordable pricing.
-</p>
-
-<p>
-Our aim is to bring quality design, strong finishing, and a wide range of products to grassroots clubs, ensuring high performance is not only achieved but visible.
-</p>
-
-</div>
-
-);
-
-}
-
-
-
-function Impact(){
-
-return(
-
-<div style={impactBox}>
-
-<div style={impactGrid}>
-
-<div style={impactCard}>
-Professional finish
-</div>
-
-<div style={impactCard}>
-Designed for clubs
-</div>
-
-<div style={impactCard}>
-Custom colours available
-</div>
-
-<div style={impactCard}>
-Affordable pricing
-</div>
-
-</div>
-
-</div>
-
-);
-
-}
-
-
-
-function CategoryGrid({setPage}){
-
-return(
-
-<div style={section}>
-
-<h2>Browse Range</h2>
-
-<div style={grid}>
-
-{categories.map(cat=>(
-
-<div key={cat.id} style={cardHover} onClick={()=>setPage(cat.id)}>
-
-<img src={cat.img} style={img}/>
-
-{cat.name}
-
-</div>
-
-))}
-
-</div>
-
-</div>
-
-);
-
-}
-
-
-
-function ProductGrid({items,setSelected}){
+function ProductGrid({items,openProduct}){
 
 return(
 
@@ -302,7 +190,7 @@ return(
 
 {items.map((p,i)=>(
 
-<div key={i} style={cardHover} onClick={()=>setSelected(p)}>
+<div key={i} style={cardHover} onClick={()=>openProduct(p)}>
 
 <div style={{position:"relative"}}>
 
@@ -373,289 +261,3 @@ WhatsApp Enquiry
 );
 
 }
-
-
-
-function ContactSection(){
-
-return(
-
-<div style={section}>
-
-<h2>Request Information</h2>
-
-<div style={form}>
-
-<input placeholder="Name" style={input}/>
-
-<input placeholder="Club / Team" style={input}/>
-
-<input placeholder="Email" style={input}/>
-
-<textarea placeholder="What products do you need?" style={input}/>
-
-<button style={cta}>
-Send Enquiry
-</button>
-
-</div>
-
-</div>
-
-);
-
-}
-
-
-
-function TrustSection(){
-
-return(
-
-<div style={section}>
-
-<h2>Why choose Pure Motion</h2>
-
-<div style={grid}>
-
-<div style={card}>Premium materials</div>
-
-<div style={card}>Custom designs</div>
-
-<div style={card}>Affordable pricing</div>
-
-<div style={card}>Fast turnaround</div>
-
-<div style={card}>Low minimum orders</div>
-
-<div style={card}>Wide range</div>
-
-</div>
-
-</div>
-
-);
-
-}
-
-
-
-function FAQSection(){
-
-return(
-
-<div style={section}>
-
-<h2>FAQ</h2>
-
-<div style={faqBox}>
-
-<p><strong>Minimum order?</strong><br/>Low minimums available.</p>
-
-<p><strong>Custom colours?</strong><br/>Yes.</p>
-
-<p><strong>Add club logo?</strong><br/>Yes.</p>
-
-<p><strong>Delivery time?</strong><br/>2–4 weeks.</p>
-
-<p><strong>Samples?</strong><br/>Available.</p>
-
-</div>
-
-</div>
-
-);
-
-}
-
-
-
-function Nav({setPage,cartCount,active}){
-
-return(
-
-<div style={nav}>
-
-<div style={logoWrap} onClick={()=>setPage("home")}>
-
-<div style={logoIcon}>PM</div>
-
-<div style={logo}>PURE MOTION</div>
-
-</div>
-
-<div style={navLinks}>
-
-{categories.map(c=>(
-<Btn key={c.id} label={c.name} click={()=>setPage(c.id)} active={active===c.id}/>
-))}
-
-<Btn label={`Quote (${cartCount})`} click={()=>setPage("cart")} active={active==="cart"}/>
-
-</div>
-
-</div>
-
-);
-
-}
-
-
-
-function Btn({label,click,active}){
-
-return(
-
-<button onClick={click} style={{...navBtn,background:active?brand.accent:"#111",color:active?"#000":brand.text}}>
-
-{label}
-
-</button>
-
-);
-
-}
-
-
-
-function Section({title,children}){
-
-return(
-
-<div style={section}>
-
-<h1>{title}</h1>
-
-{children}
-
-</div>
-
-);
-
-}
-
-
-
-function Footer(){
-
-return(
-
-<div style={footer}>
-
-PURE MOTION
-
-<br/><br/>
-
-enquiries@puremotion.com
-
-</div>
-
-);
-
-}
-
-
-
-const wrapper={background:brand.bg,color:brand.text,minHeight:"100vh",fontFamily:"Arial"};
-
-const nav={
-position:"sticky",
-top:0,
-background:brand.bg,
-padding:"18px 18px 10px 18px",
-borderBottom:"1px solid #111",
-display:"flex",
-flexDirection:"column",
-alignItems:"flex-start",
-gap:14,
-zIndex:10
-};
-
-const logoWrap={
-display:"flex",
-alignItems:"center",
-gap:10,
-cursor:"pointer",
-width:"100%",
-justifyContent:"space-between"
-};
-
-const logoIcon={background:brand.accent,padding:"6px 10px",borderRadius:6,color:"#000",fontWeight:800};
-
-const logo={color:brand.accent,fontWeight:900,fontSize:"22px",transform:"skewX(-12deg)"};
-
-const navLinks={
-display:"flex",
-flexWrap:"wrap",
-gap:10,
-width:"100%",
-marginTop:6
-};
-
-const navBtn={
-padding:"10px 16px",
-borderRadius:22,
-border:"1px solid rgba(255,255,255,0.06)",
-cursor:"pointer",
-fontSize:14,
-fontWeight:600
-};
-
-const hero={
-padding:"30px 20px",
-display:"grid",
-gridTemplateColumns:"1fr",
-gap:25
-};
-
-const heroTitle={fontSize:34};
-
-const heroImg={width:"100%",borderRadius:20};
-
-const missionBox={marginTop:20,padding:20,background:brand.accentSoft,borderRadius:12};
-
-const bigLogo={
-fontSize:48,
-fontWeight:900,
-color:brand.accent,
-letterSpacing:2,
-transform:"skewX(-12deg)",
-textShadow:"0 0 18px rgba(34,197,94,0.35)",
-marginBottom:10
-};
-
-const impactBox={marginTop:20,background:brand.card,padding:20,borderRadius:14};
-
-const impactGrid={display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12};
-
-const impactCard={background:brand.accentSoft,padding:14,borderRadius:10,textAlign:"center",fontWeight:600};
-
-const section={padding:40};
-
-const grid={display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:20,marginTop:20};
-
-const card={background:brand.card,padding:16,borderRadius:12};
-
-const cardHover={background:brand.card,padding:16,borderRadius:12,cursor:"pointer"};
-
-const img={width:"100%",borderRadius:10};
-
-const badge={position:"absolute",top:10,left:10,background:brand.accent,color:"#000",padding:"4px 8px",borderRadius:6,fontSize:12};
-
-const form={display:"grid",gap:10,maxWidth:400};
-
-const input={padding:10,borderRadius:6,border:"1px solid #333",background:"#020617",color:"#fff"};
-
-const faqBox={background:brand.card,padding:20,borderRadius:12};
-
-const cartItem={display:"flex",gap:10,marginTop:10};
-
-const cta={background:brand.accent,border:"none",padding:"12px 18px",borderRadius:8,marginTop:10,width:"100%",cursor:"pointer"};
-
-const whatsappBtn={background:"#25D366",border:"none",padding:"12px 18px",borderRadius:8,width:"100%",marginTop:10,cursor:"pointer"};
-
-const modalBg={position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",display:"flex",justifyContent:"center",alignItems:"center"};
-
-const modal={background:brand.bg,padding:30,borderRadius:12,width:320};
-
-const footer={padding:40,textAlign:"center",borderTop:"1px solid #111",marginTop:40};
